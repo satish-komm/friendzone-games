@@ -1,95 +1,248 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>FriendZone — Online Multiplayer</title>
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>FriendZone - Multiplayer Games</title>
 
 <style>
-*{box-sizing:border-box}
+
+/* =========================
+   GLOBAL
+========================= */
+
+*{
+  box-sizing:border-box;
+}
+
+html,body{
+  margin:0;
+  padding:0;
+  min-height:100%;
+}
 
 body{
-  margin:0;
-  font-family:system-ui,-apple-system,Segoe UI,sans-serif;
-  background:#080b17;
-  color:#fff;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  background:
+    radial-gradient(
+      circle at top,
+      #20275c 0%,
+      #0b1028 45%,
+      #050711 100%
+    );
+
+  color:white;
 }
 
-header{
-  background:linear-gradient(135deg,#191e49,#0b1024);
-  padding:24px 16px;
-}
-
-.wrap{
-  max-width:900px;
-  margin:auto;
-}
-
-h1{
-  margin:0;
-  font-size:31px;
-}
-
-h2{
-  margin:0 0 12px;
-}
-
-p{
-  color:#aab2d5;
-}
-
-.card{
-  background:#12172a;
-  border:1px solid #293151;
-  border-radius:20px;
-  padding:18px;
-  margin:16px 0;
-}
-
-input,select{
-  width:100%;
-  padding:14px;
-  border-radius:12px;
-  border:1px solid #343d61;
-  background:#090d1b;
-  color:#fff;
-  font-size:16px;
-  margin:6px 0 12px;
+button,
+input{
+  font:inherit;
 }
 
 button{
-  border:0;
-  border-radius:13px;
-  padding:13px 16px;
-  font-weight:800;
   cursor:pointer;
+}
+
+.hidden{
+  display:none !important;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+  padding:30px 18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #252b72,
+      #111735 55%,
+      #080b1b
+    );
+
+  border-bottom:
+    1px solid rgba(255,255,255,.08);
+}
+
+.container{
+  width:100%;
+  max-width:950px;
+  margin:auto;
+}
+
+.logo{
+  font-size:36px;
+  font-weight:900;
+  letter-spacing:-1px;
+}
+
+.tagline{
+  margin-top:8px;
+  color:#bfc6ee;
+  font-size:17px;
+}
+
+
+/* =========================
+   CARDS
+========================= */
+
+.card{
+  margin:18px 0;
+  padding:20px;
+
+  background:
+    rgba(18,23,48,.88);
+
+  border:
+    1px solid rgba(130,140,220,.22);
+
+  border-radius:22px;
+
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.25);
+}
+
+h2{
+  margin-top:0;
+}
+
+h3{
+  margin-bottom:10px;
+}
+
+
+/* =========================
+   INPUTS
+========================= */
+
+label{
+  display:block;
+  margin:8px 0;
+  color:#bfc7ef;
+  font-weight:700;
+}
+
+input{
+  width:100%;
+  padding:15px;
+
+  border-radius:14px;
+
+  border:
+    1px solid #3a426d;
+
+  background:#080c1d;
+
   color:white;
-  transition:.15s;
+
+  outline:none;
+
+  font-size:16px;
+}
+
+input:focus{
+  border-color:#7770ff;
+}
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+button{
+  border:none;
+  color:white;
+
+  padding:14px 17px;
+
+  border-radius:14px;
+
+  font-weight:800;
+
+  transition:
+    transform .12s,
+    opacity .12s;
 }
 
 button:active{
   transform:scale(.96);
 }
 
+button:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+
 .primary{
-  background:#6c63ff;
+  background:
+    linear-gradient(
+      135deg,
+      #7168ff,
+      #554cf0
+    );
 }
 
 .secondary{
-  background:#252d4b;
-}
-
-.danger{
-  background:#d84b68;
+  background:#29314f;
 }
 
 .green{
-  background:#168b61;
+  background:
+    linear-gradient(
+      135deg,
+      #18a873,
+      #087b55
+    );
 }
 
 .orange{
-  background:#c87920;
+  background:
+    linear-gradient(
+      135deg,
+      #e39336,
+      #bb6419
+    );
 }
+
+.red{
+  background:
+    linear-gradient(
+      135deg,
+      #df506d,
+      #a92747
+    );
+}
+
+.blue{
+  background:
+    linear-gradient(
+      135deg,
+      #318eea,
+      #2364c4
+    );
+}
+
+.full{
+  width:100%;
+}
+
+
+/* =========================
+   ROW
+========================= */
 
 .row{
   display:flex;
@@ -97,1559 +250,2927 @@ button:active{
   flex-wrap:wrap;
 }
 
-.row>*{
+.row button{
   flex:1;
+  min-width:140px;
 }
 
-.hidden{
-  display:none!important;
+
+/* =========================
+   STATUS
+========================= */
+
+.status{
+  padding:13px 15px;
+
+  background:#171e39;
+
+  border-radius:14px;
+
+  margin:14px 0;
+
+  color:#c6cdef;
 }
 
-.roomcode{
-  font-size:35px;
-  letter-spacing:7px;
+.status.good{
+  color:#74e2ae;
+}
+
+.status.error{
+  color:#ff879f;
+}
+
+
+/* =========================
+   JOIN BOX
+========================= */
+
+.join-box{
+  margin-top:15px;
+}
+
+
+/* =========================
+   ROOM CODE
+========================= */
+
+.room-code{
   text-align:center;
+
+  font-size:38px;
+
   font-weight:900;
-  margin:10px 0;
-  color:#a9a3ff;
+
+  letter-spacing:7px;
+
+  color:#aaa4ff;
+
+  padding:12px;
 }
+
+
+/* =========================
+   PLAYERS
+========================= */
 
 .players{
   display:grid;
-  gap:8px;
+  gap:9px;
 }
 
 .player{
-  background:#1b2139;
-  border-radius:12px;
-  padding:11px;
+  padding:13px;
+
+  background:#1b2340;
+
+  border:
+    1px solid #303a60;
+
+  border-radius:14px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
 }
 
-.status{
-  padding:10px 12px;
-  background:#1a2038;
-  border-radius:12px;
-  color:#c7cdf0;
-  margin:10px 0;
+.player-name{
+  font-weight:800;
 }
 
-.good{
-  color:#70e1a5;
+.player-ready{
+  color:#69dda4;
+  font-size:13px;
 }
 
-.bad{
-  color:#ff8fa5;
-}
+
+/* =========================
+   GAME SELECT
+========================= */
 
 .games{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
-  gap:10px;
+
+  grid-template-columns:
+    repeat(
+      auto-fit,
+      minmax(140px,1fr)
+    );
+
+  gap:11px;
 }
 
-.gamepick{
-  padding:15px;
-  background:#1a2038;
-  border:1px solid #30385b;
-  border-radius:15px;
+.game-card{
+  background:#1a213d;
+
+  border:
+    1px solid #30395f;
+
+  padding:16px;
+
+  border-radius:16px;
+
   color:white;
+
   text-align:left;
 }
 
-.gamepick.selected{
-  outline:2px solid #7b73ff;
+.game-card.selected{
+  border-color:#827bff;
+
+  box-shadow:
+    0 0 0 2px
+    rgba(130,123,255,.22);
+
+  background:#242b55;
 }
 
-.board{
+.game-icon{
+  font-size:29px;
+  margin-bottom:6px;
+}
+
+
+/* =========================
+   TTT
+========================= */
+
+.ttt-board{
   display:grid;
-  grid-template-columns:repeat(3,90px);
-  gap:8px;
+
+  grid-template-columns:
+    repeat(3,90px);
+
+  gap:9px;
+
   justify-content:center;
-  margin:18px auto;
+
+  margin:25px auto;
 }
 
-.cell{
+.ttt-cell{
   width:90px;
   height:90px;
-  font-size:35px;
-  background:#202744;
-  color:#fff;
+
+  font-size:36px;
+
+  background:#20294b;
+
+  border:
+    1px solid #39466f;
 }
 
-.small{
-  font-size:12px;
-  color:#8993b8;
+.ttt-cell:hover{
+  background:#2a345b;
 }
 
-#toast{
-  position:fixed;
-  bottom:18px;
-  left:50%;
-  transform:translateX(-50%);
-  background:#171d35;
-  padding:12px 16px;
-  border-radius:12px;
-  display:none;
-  z-index:100;
-  box-shadow:0 10px 30px #0008;
-}
 
-.arcade{
+/* =========================
+   FINISH
+========================= */
+
+.winner{
   text-align:center;
+
+  padding:20px;
+
+  margin:15px 0;
+
+  background:
+    linear-gradient(
+      135deg,
+      #242b55,
+      #181e3a
+    );
+
+  border-radius:18px;
+
+  font-size:24px;
+
+  font-weight:900;
+}
+
+
+/* =========================
+   RACE
+========================= */
+
+.race-info{
+  text-align:center;
+
+  color:#bfc7ed;
+
+  margin-bottom:15px;
 }
 
 .track{
-  background:#090d1b;
-  border:1px solid #30385b;
-  border-radius:18px;
-  padding:14px;
-  margin:12px 0;
+  padding:13px;
+
+  margin:10px 0;
+
+  background:#0c1125;
+
+  border-radius:16px;
+
+  border:
+    1px solid #293459;
 }
 
-.trackTitle{
+.track.me{
+  border:
+    2px solid #7168ff;
+}
+
+.track-header{
   display:flex;
+
   justify-content:space-between;
+
   gap:10px;
+
   margin-bottom:8px;
 }
 
+.track-name{
+  font-weight:800;
+}
+
+.track-percent{
+  color:#a9a4ff;
+  font-weight:900;
+}
+
 .progress{
+  width:100%;
   height:25px;
-  background:#202744;
-  border-radius:20px;
+
+  background:#242d4d;
+
+  border-radius:30px;
+
   overflow:hidden;
 }
 
-.progressFill{
+.progress-bar{
   height:100%;
+
   width:0%;
-  transition:.25s;
-  background:linear-gradient(90deg,#6c63ff,#a79fff);
+
+  background:
+    linear-gradient(
+      90deg,
+      #675eff,
+      #a39eff
+    );
+
+  transition:
+    width .2s;
 }
 
-.myTrack{
-  border:2px solid #6c63ff;
-}
 
-.bigButton{
-  width:100%;
-  min-height:70px;
-  font-size:22px;
-  margin-top:12px;
-}
-
-.raceButtons{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
+/* =========================
+   STATS
+========================= */
 
 .stats{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:8px;
-  margin-top:12px;
-}
 
-.stat{
-  background:#1a2038;
-  padding:12px;
-  border-radius:12px;
-}
+  grid-template-columns:
+    repeat(3,1fr);
 
-.stat b{
-  display:block;
-  font-size:22px;
-}
+  gap:9px;
 
-.finish{
-  font-size:25px;
-  font-weight:900;
-  padding:20px;
-  background:#1a2038;
-  border-radius:18px;
   margin:15px 0;
 }
 
-.lane{
-  position:relative;
-  height:150px;
-  background:#10162a;
-  border-radius:18px;
-  overflow:hidden;
-  border:1px solid #30385b;
+.stat{
+  padding:12px;
+
+  background:#1a213d;
+
+  border-radius:14px;
+
+  text-align:center;
+
+  color:#aeb7dc;
 }
 
-.runner{
-  position:absolute;
-  left:10px;
-  top:52px;
-  font-size:45px;
-  transition:left .25s;
+.stat strong{
+  display:block;
+
+  color:white;
+
+  font-size:22px;
 }
 
-.finishLine{
-  position:absolute;
-  right:12px;
-  top:0;
-  height:100%;
-  border-left:5px dashed #aaa;
+
+/* =========================
+   ACTION BUTTON
+========================= */
+
+.action-button{
+  width:100%;
+
+  min-height:72px;
+
+  font-size:21px;
+
+  margin-top:8px;
 }
 
-.obstacle{
-  position:absolute;
-  right:25%;
-  top:48px;
-  font-size:38px;
+.two-actions{
+  display:grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:10px;
 }
+
+
+/* =========================
+   INSTRUCTIONS
+========================= */
 
 .instructions{
-  background:#10162a;
-  border-radius:14px;
-  padding:12px;
-  margin-top:12px;
-  color:#aab2d5;
+  padding:15px;
+
+  background:#11172e;
+
+  border-radius:15px;
+
+  color:#b9c2e6;
+
+  line-height:1.5;
 }
 
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer{
+  text-align:center;
+
+  padding:25px;
+
+  color:#727b9f;
+
+  font-size:13px;
+}
+
+
+/* =========================
+   TOAST
+========================= */
+
+#toast{
+  position:fixed;
+
+  left:50%;
+
+  bottom:22px;
+
+  transform:
+    translateX(-50%);
+
+  background:#171d35;
+
+  color:white;
+
+  padding:13px 18px;
+
+  border-radius:13px;
+
+  display:none;
+
+  z-index:9999;
+
+  box-shadow:
+    0 10px 40px rgba(0,0,0,.4);
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
 @media(max-width:600px){
-  .board{
-    grid-template-columns:repeat(3,75px);
+
+  .logo{
+    font-size:31px;
   }
 
-  .cell{
+  .card{
+    border-radius:18px;
+    padding:16px;
+  }
+
+  .room-code{
+    font-size:31px;
+  }
+
+  .ttt-board{
+    grid-template-columns:
+      repeat(3,75px);
+  }
+
+  .ttt-cell{
     width:75px;
     height:75px;
   }
 
-  .raceButtons{
+  .stats{
+    gap:6px;
+  }
+
+  .stat{
+    padding:9px 4px;
+    font-size:12px;
+  }
+
+  .stat strong{
+    font-size:19px;
+  }
+
+  .two-actions{
     grid-template-columns:1fr;
   }
 
-  .stats{
-    grid-template-columns:1fr 1fr 1fr;
-  }
 }
+
 </style>
 </head>
 
+
 <body>
 
-<header>
-<div class="wrap">
-<h1>🎮 FriendZone</h1>
-<p>Play mini-games with friends online</p>
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header class="header">
+
+<div class="container">
+
+<div class="logo">
+🎮 FriendZone
 </div>
+
+<div class="tagline">
+Play mini-games with friends online
+</div>
+
+</div>
+
 </header>
 
-<main class="wrap">
 
-<!-- SETUP -->
-<section id="setup" class="card">
+<main class="container">
 
-<h2>Start playing</h2>
 
-<label>Your nickname</label>
-<input id="name" maxlength="18" placeholder="Enter your name">
+<!-- =========================
+     SETUP
+========================= -->
+
+<section
+id="setup"
+class="card">
+
+<h2>🚀 Start Playing</h2>
+
+<label>
+Your nickname
+</label>
+
+<input
+id="name"
+maxlength="18"
+placeholder="Enter your name"
+autocomplete="off"
+>
 
 <div class="row">
-<button class="primary" onclick="createRoom()">➕ Create Room</button>
-<button class="secondary" onclick="showJoin()">🔗 Join Room</button>
+
+<button
+class="primary"
+onclick="createRoom()"
+>
+➕ Create Room
+</button>
+
+<button
+class="secondary"
+onclick="showJoin()"
+>
+🔗 Join Room
+</button>
+
 </div>
 
-<div id="joinBox" class="hidden">
-<input id="joinCode" maxlength="6" placeholder="6-digit room code">
-<button class="primary" onclick="joinRoom()">Join Room</button>
+
+<div
+id="joinBox"
+class="join-box hidden">
+
+<label>
+Room code
+</label>
+
+<input
+id="joinCode"
+maxlength="6"
+inputmode="numeric"
+placeholder="Enter 6-digit code"
+>
+
+<button
+class="primary full"
+onclick="joinRoom()"
+>
+Join Room
+</button>
+
 </div>
 
-<div class="status" id="connectionStatus">
-Connecting to multiplayer server...
+
+<div
+id="connectionStatus"
+class="status"
+>
+🔄 Connecting to multiplayer server...
 </div>
 
 </section>
 
 
-<!-- ROOM -->
-<section id="room" class="card hidden">
+<!-- =========================
+     ROOM
+========================= -->
 
-<button class="danger" style="float:right" onclick="leaveRoom()">Leave</button>
-
-<h2>Room</h2>
-
-<div class="roomcode" id="code">------</div>
+<section
+id="room"
+class="card hidden">
 
 <div class="row">
-<button class="secondary" onclick="copyCode()">📋 Copy code</button>
-<button class="primary" id="startBtn" onclick="startSelected()">▶ Start Game</button>
+
+<h2 style="flex:1">
+🏠 Game Room
+</h2>
+
+<button
+class="red"
+onclick="leaveRoom()"
+>
+Leave
+</button>
+
 </div>
 
-<div class="status" id="roomStatus">
+
+<div
+id="roomCode"
+class="room-code"
+>
+------
+</div>
+
+
+<div class="row">
+
+<button
+class="secondary"
+onclick="copyCode()"
+>
+📋 Copy Code
+</button>
+
+<button
+id="startButton"
+class="primary"
+onclick="startGame()"
+>
+▶ Start Game
+</button>
+
+</div>
+
+
+<div
+id="roomStatus"
+class="status"
+>
 Waiting for players...
 </div>
 
-<h3>Players</h3>
 
-<div class="players" id="players"></div>
+<h3>
+👥 Players
+</h3>
 
-<h3>Choose a game</h3>
+<div
+id="players"
+class="players"
+>
+</div>
+
+
+<h3>
+🎮 Choose Game
+</h3>
+
 
 <div class="games">
 
-<button class="gamepick selected"
+
+<button
+class="game-card selected"
 data-game="ttt"
-onclick="selectGame('ttt')">
-❌⭕<br>
-Tic-Tac-Toe
+onclick="selectGame('ttt')"
+>
+
+<div class="game-icon">
+❌⭕
+</div>
+
+<b>Tic-Tac-Toe</b>
+
+<div class="small">
+Classic 2-player game
+</div>
+
 </button>
 
-<button class="gamepick"
+
+<button
+class="game-card"
 data-game="car"
-onclick="selectGame('car')">
-🏎️<br>
-Car Rush
+onclick="selectGame('car')"
+>
+
+<div class="game-icon">
+🏎️
+</div>
+
+<b>Car Rush</b>
+
+<div class="small">
+Race to the finish
+</div>
+
 </button>
 
-<button class="gamepick"
+
+<button
+class="game-card"
 data-game="bike"
-onclick="selectGame('bike')">
-🏍️<br>
-Bike Dash
+onclick="selectGame('bike')"
+>
+
+<div class="game-icon">
+🏍️
+</div>
+
+<b>Bike Dash</b>
+
+<div class="small">
+Pedal and dodge
+</div>
+
 </button>
 
-<button class="gamepick"
+
+<button
+class="game-card"
 data-game="run"
-onclick="selectGame('run')">
-🏃<br>
-Run Rush
+onclick="selectGame('run')"
+>
+
+<div class="game-icon">
+🏃
+</div>
+
+<b>Run Rush</b>
+
+<div class="small">
+Tap to run
+</div>
+
 </button>
+
 
 </div>
 
 </section>
 
 
-<!-- GAME -->
-<section id="game" class="card hidden">
+<!-- =========================
+     GAME
+========================= -->
 
-<button class="secondary"
-style="float:right"
-onclick="backToRoom()">
-Room
+<section
+id="game"
+class="card hidden">
+
+<div class="row">
+
+<h2
+id="gameTitle"
+style="flex:1"
+>
+Game
+</h2>
+
+<button
+class="secondary"
+onclick="backToRoom()"
+>
+🏠 Room
 </button>
 
-<h2 id="gameTitle">Tic-Tac-Toe</h2>
+</div>
 
-<div class="status" id="gameStatus">
+
+<div
+id="gameStatus"
+class="status"
+>
 Loading...
 </div>
 
+
 <div id="ttt"></div>
 
-<div id="arcade" class="hidden"></div>
+<div id="arcade"></div>
 
 </section>
 
 
-<!-- HELP -->
+<!-- =========================
+     HOW IT WORKS
+========================= -->
+
 <section class="card">
 
-<h2>📱 How it works</h2>
+<h2>
+📱 How it works
+</h2>
 
-<p>1. One player creates a room.</p>
-<p>2. Share the 6-digit room code.</p>
-<p>3. Friends join the same room.</p>
-<p>4. Host chooses a game.</p>
-<p>5. Press Start Game.</p>
-<p>6. Everyone plays together in realtime.</p>
+<p>
+1️⃣ Create a room.
+</p>
 
-<p class="small">
-FriendZone uses Firebase Authentication and Realtime Database for multiplayer synchronization.
+<p>
+2️⃣ Share the 6-digit room code.
+</p>
+
+<p>
+3️⃣ Friends join your room.
+</p>
+
+<p>
+4️⃣ Host chooses a game.
+</p>
+
+<p>
+5️⃣ Press Start Game.
+</p>
+
+<p>
+6️⃣ Everyone plays together in realtime.
 </p>
 
 </section>
 
+
 </main>
+
 
 <div id="toast"></div>
 
 
+<footer class="footer">
+
+FriendZone Multiplayer 🎮
+
+</footer>
+
+
+
 <script type="module">
-
-import {
-initializeApp
-} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
-
-import {
-getDatabase,
-ref,
-set,
-get,
-update,
-onValue,
-remove,
-runTransaction
-} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-database.js";
-
-import {
-getAuth,
-signInAnonymously
-} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 
 
 /* =====================================================
-   FIREBASE CONFIG
-   KEEP YOUR EXISTING CONFIG HERE
-   ===================================================== */
+   FIREBASE IMPORTS
+===================================================== */
+
+import {
+  initializeApp
+}
+from
+"https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+
+
+import {
+  getDatabase,
+  ref,
+  set,
+  get,
+  update,
+  onValue,
+  remove,
+  runTransaction
+}
+from
+"https://www.gstatic.com/firebasejs/12.18.0/firebase-database.js";
+
+
+import {
+  getAuth,
+  signInAnonymously
+}
+from
+"https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+
+
+
+/* =====================================================
+   YOUR FIREBASE CONFIG
+===================================================== */
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBzLchy5M2fLne4c7Ghw1KNN8wVrlZdd8M",
-  authDomain: "friendsgame-872f5.firebaseapp.com",
-  databaseURL: "https://friendsgame-872f5-default-rtdb.firebaseio.com",
-  projectId: "friendsgame-872f5",
-  storageBucket: "friendsgame-872f5.firebasestorage.app",
-  messagingSenderId: "522534013233",
-  appId: "1:522534013233:web:f5faa6e6795023d0420810",
-  measurementId: "G-PW5H3G97QR"
+
+  apiKey:
+  "AIzaSyBzLchy5M2fLne4c7Ghw1KNN8wVrlZdd8M",
+
+  authDomain:
+  "friendsgame-872f5.firebaseapp.com",
+
+  databaseURL:
+  "https://friendsgame-872f5-default-rtdb.firebaseio.com",
+
+  projectId:
+  "friendsgame-872f5",
+
+  storageBucket:
+  "friendsgame-872f5.firebasestorage.app",
+
+  messagingSenderId:
+  "522534013233",
+
+  appId:
+  "1:522534013233:web:f5faa6e6795023d0420810",
+
+  measurementId:
+  "G-PW5H3G97QR"
+
 };
 
 
-/* ===================================================== */
 
-let app;
-let db;
-let auth;
+/* =====================================================
+   GLOBAL VARIABLES
+===================================================== */
 
-let uid=null;
-let roomId=null;
-let isHost=false;
+let app = null;
 
-let selectedGame="ttt";
+let db = null;
 
-let unsubscribe=null;
+let auth = null;
+
+let uid = null;
+
+let roomId = null;
+
+let isHost = false;
+
+let selectedGame = "ttt";
+
+let roomListener = null;
 
 
-/* ---------- HELPERS ---------- */
 
-const $=id=>document.getElementById(id);
+/* =====================================================
+   HELPER
+===================================================== */
 
-function toast(message){
+function $(id){
 
-let t=$("toast");
-
-t.textContent=message;
-
-t.style.display="block";
-
-clearTimeout(window.toastTimer);
-
-window.toastTimer=setTimeout(()=>{
-t.style.display="none";
-},2500);
+  return document.getElementById(id);
 
 }
 
 
-function cleanName(){
+function escapeHTML(value){
 
-return ($("name").value.trim()||"Player").slice(0,18);
-
-}
-
-
-function esc(s){
-
-return String(s).replace(/[&<>"']/g,m=>({
-
-"&":"&amp;",
-"<":"&lt;",
-">":"&gt;",
-'"':"&quot;",
-"'":"&#39;"
-
-}[m]));
+  return String(value)
+  .replace(/&/g,"&amp;")
+  .replace(/</g,"&lt;")
+  .replace(/>/g,"&gt;")
+  .replace(/"/g,"&quot;")
+  .replace(/'/g,"&#039;");
 
 }
 
 
-/* ---------- FIREBASE ---------- */
+function showToast(message){
+
+  const toast = $("toast");
+
+  toast.textContent = message;
+
+  toast.style.display = "block";
+
+  clearTimeout(window.toastTimeout);
+
+  window.toastTimeout =
+  setTimeout(()=>{
+
+    toast.style.display = "none";
+
+  },2500);
+
+}
+
+
+function getName(){
+
+  let name =
+  $("name").value.trim();
+
+  if(!name){
+
+    name = "Player";
+
+  }
+
+  return name.slice(0,18);
+
+}
+
+
+
+/* =====================================================
+   FIREBASE BOOT
+===================================================== */
 
 async function boot(){
 
-try{
+  try{
 
-app=initializeApp(firebaseConfig);
+    app =
+    initializeApp(firebaseConfig);
 
-db=getDatabase(app);
+    db =
+    getDatabase(app);
 
-auth=getAuth(app);
+    auth =
+    getAuth(app);
 
-await signInAnonymously(auth);
+    await signInAnonymously(auth);
 
-uid=auth.currentUser.uid;
+    uid =
+    auth.currentUser.uid;
 
-$("connectionStatus").innerHTML=
-"<span class='good'>● Connected to multiplayer server</span>";
+    $("connectionStatus").innerHTML =
+    "🟢 Connected to multiplayer server";
 
-}catch(error){
+    $("connectionStatus")
+    .classList.add("good");
 
-console.error(error);
+  }
 
-$("connectionStatus").innerHTML=
-"<span class='bad'>● Firebase connection failed</span>";
+  catch(error){
 
-toast("Firebase connection failed");
+    console.error(error);
+
+    $("connectionStatus").innerHTML =
+    "🔴 Firebase connection failed";
+
+    $("connectionStatus")
+    .classList.add("error");
+
+    showToast(
+      "Firebase connection failed"
+    );
+
+  }
 
 }
 
-}
 
 boot();
 
 
-/* ---------- ROOM CODE ---------- */
 
-function randomCode(){
+/* =====================================================
+   ROOM CODE
+===================================================== */
 
-return String(
-Math.floor(100000+Math.random()*900000)
-);
+function generateRoomCode(){
 
-}
-
-
-async function uniqueCode(){
-
-for(let i=0;i<10;i++){
-
-let c=randomCode();
-
-let snap=await get(
-ref(db,"rooms/"+c)
-);
-
-if(!snap.exists()) return c;
-
-}
-
-throw new Error("Could not create room");
+  return String(
+    Math.floor(
+      100000 +
+      Math.random()*900000
+    )
+  );
 
 }
 
 
-/* ---------- CREATE ROOM ---------- */
+async function createUniqueRoomCode(){
+
+  for(
+    let i=0;
+    i<10;
+    i++
+  ){
+
+    const code =
+    generateRoomCode();
+
+    const snapshot =
+    await get(
+      ref(db,"rooms/"+code)
+    );
+
+    if(!snapshot.exists()){
+
+      return code;
+
+    }
+
+  }
+
+  throw new Error(
+    "Unable to generate room"
+  );
+
+}
+
+
+
+/* =====================================================
+   CREATE ROOM
+===================================================== */
 
 async function createRoom(){
 
-if(!uid){
+  if(!uid){
 
-toast("Still connecting...");
+    showToast(
+      "Please wait for Firebase to connect"
+    );
 
-return;
+    return;
 
-}
-
-try{
-
-let c=await uniqueCode();
-
-let name=cleanName();
-
-roomId=c;
-
-isHost=true;
-
-await set(
-ref(db,"rooms/"+c),
-{
-host:uid,
-game:"ttt",
-started:false,
-createdAt:Date.now(),
-
-players:{
-[uid]:{
-name:name,
-ready:false
-}
-}
-
-}
-);
-
-openRoom();
-
-listenRoom();
-
-toast("Room created!");
-
-}catch(error){
-
-console.error(error);
-
-toast("Could not create room");
-
-}
-
-}
+  }
 
 
-/* ---------- JOIN ROOM ---------- */
+  try{
 
-async function joinRoom(){
+    const code =
+    await createUniqueRoomCode();
 
-if(!uid){
+    roomId = code;
 
-toast("Still connecting...");
+    isHost = true;
 
-return;
+    const playerName =
+    getName();
 
-}
 
-let c=$("joinCode").value.trim();
+    await set(
+      ref(
+        db,
+        "rooms/"+code
+      ),
+      {
 
-if(!/^\d{6}$/.test(c)){
+        host:uid,
 
-toast("Enter a 6-digit room code");
+        game:"ttt",
 
-return;
+        started:false,
 
-}
+        winner:null,
 
-try{
+        createdAt:Date.now(),
 
-let snap=await get(
-ref(db,"rooms/"+c)
-);
+        players:{
 
-if(!snap.exists()){
+          [uid]:{
 
-toast("Room not found");
+            name:playerName,
 
-return;
+            ready:false
+
+          }
+
+        }
+
+      }
+    );
+
+
+    openRoom();
+
+    listenToRoom();
+
+    showToast(
+      "Room created!"
+    );
+
+  }
+
+  catch(error){
+
+    console.error(error);
+
+    showToast(
+      "Could not create room"
+    );
+
+  }
 
 }
 
-let data=snap.val();
 
-let players=data.players||{};
 
-if(Object.keys(players).length>=4){
-
-toast("Room is full");
-
-return;
-
-}
-
-roomId=c;
-
-isHost=false;
-
-await update(
-ref(db,"rooms/"+c+"/players/"+uid),
-{
-name:cleanName(),
-ready:false
-}
-);
-
-openRoom();
-
-listenRoom();
-
-toast("Joined room!");
-
-}catch(error){
-
-console.error(error);
-
-toast("Could not join room");
-
-}
-
-}
-
+/* =====================================================
+   SHOW JOIN
+===================================================== */
 
 function showJoin(){
 
-$("joinBox").classList.toggle("hidden");
+  $("joinBox")
+  .classList
+  .toggle("hidden");
 
-$("joinCode").focus();
+  $("joinCode").focus();
 
 }
 
+
+
+/* =====================================================
+   JOIN ROOM
+===================================================== */
+
+async function joinRoom(){
+
+  if(!uid){
+
+    showToast(
+      "Please wait for Firebase to connect"
+    );
+
+    return;
+
+  }
+
+
+  const code =
+  $("joinCode")
+  .value
+  .trim();
+
+
+  if(!/^\d{6}$/.test(code)){
+
+    showToast(
+      "Enter a valid 6-digit room code"
+    );
+
+    return;
+
+  }
+
+
+  try{
+
+    const snapshot =
+    await get(
+      ref(
+        db,
+        "rooms/"+code
+      )
+    );
+
+
+    if(!snapshot.exists()){
+
+      showToast(
+        "Room does not exist"
+      );
+
+      return;
+
+    }
+
+
+    const data =
+    snapshot.val();
+
+
+    const players =
+    data.players || {};
+
+
+    if(
+      Object.keys(players).length>=4
+    ){
+
+      showToast(
+        "Room is full"
+      );
+
+      return;
+
+    }
+
+
+    roomId = code;
+
+    isHost = false;
+
+
+    await update(
+      ref(
+        db,
+        "rooms/"+code+
+        "/players/"+uid
+      ),
+      {
+
+        name:getName(),
+
+        ready:false
+
+      }
+    );
+
+
+    openRoom();
+
+    listenToRoom();
+
+    showToast(
+      "Joined room!"
+    );
+
+  }
+
+  catch(error){
+
+    console.error(error);
+
+    showToast(
+      "Could not join room"
+    );
+
+  }
+
+}
+
+
+
+/* =====================================================
+   OPEN ROOM
+===================================================== */
 
 function openRoom(){
 
-$("setup").classList.add("hidden");
+  $("setup")
+  .classList
+  .add("hidden");
 
-$("room").classList.remove("hidden");
+  $("room")
+  .classList
+  .remove("hidden");
 
-$("game").classList.add("hidden");
+  $("game")
+  .classList
+  .add("hidden");
 
-$("code").textContent=roomId;
-
-}
-
-
-/* ---------- ROOM LISTENER ---------- */
-
-function listenRoom(){
-
-if(unsubscribe) unsubscribe();
-
-unsubscribe=onValue(
-ref(db,"rooms/"+roomId),
-snap=>{
-
-if(!snap.exists()){
-
-toast("Room closed");
-
-location.reload();
-
-return;
-
-}
-
-let d=snap.val();
-
-let players=d.players||{};
-
-$("code").textContent=roomId;
-
-$("players").innerHTML=
-Object.entries(players)
-.map(([id,p])=>`
-
-<div class="player">
-
-${id===d.host?"👑 ":""}
-
-<b>${esc(p.name||"Player")}</b>
-
-${id===uid?" (You)":""}
-
-${p.ready?
-"<span class='good'> ✓ Ready</span>":
-""}
-
-</div>
-
-`)
-.join("");
-
-$("roomStatus").textContent=
-d.started?
-"🎮 Game in progress":
-"👥 Share the code with your friends.";
-
-$("startBtn").style.display=
-isHost?"block":"none";
-
-selectedGame=d.game||"ttt";
-
-highlight();
-
-if(d.started){
-
-showGame(d);
-
-}else{
-
-$("game").classList.add("hidden");
-
-$("room").classList.remove("hidden");
-
-}
-
-}
-);
+  $("roomCode")
+  .textContent =
+  roomId;
 
 }
 
 
-/* ---------- GAME SELECT ---------- */
 
-function selectGame(game){
+/* =====================================================
+   LISTEN TO ROOM
+===================================================== */
 
-if(!isHost){
+function listenToRoom(){
 
-toast("Only the host chooses the game");
+  if(roomListener){
 
-return;
+    roomListener();
 
-}
-
-selectedGame=game;
-
-update(
-ref(db,"rooms/"+roomId),
-{
-game:game
-}
-);
-
-highlight();
-
-}
+  }
 
 
-function highlight(){
+  roomListener =
+  onValue(
+    ref(
+      db,
+      "rooms/"+roomId
+    ),
 
-document
-.querySelectorAll(".gamepick")
-.forEach(button=>{
+    snapshot=>{
 
-button.classList.toggle(
-"selected",
-button.dataset.game===selectedGame
-);
+      if(!snapshot.exists()){
 
-});
+        showToast(
+          "Room was closed"
+        );
 
-}
+        setTimeout(
+          ()=>location.reload(),
+          1000
+        );
 
+        return;
 
-/* ---------- START GAME ---------- */
-
-async function startSelected(){
-
-if(!isHost){
-
-toast("Only the host can start");
-
-return;
-
-}
-
-let snap=await get(
-ref(db,"rooms/"+roomId+"/players")
-);
-
-let players=snap.val()||{};
-
-let ids=Object.keys(players);
-
-if(ids.length<2){
-
-toast("Need at least 2 players");
-
-return;
-
-}
+      }
 
 
-/* Initialize race players */
-
-let racePlayers={};
-
-ids.forEach(id=>{
-
-racePlayers[id]={
-
-progress:0,
-
-score:0,
-
-boost:0,
-
-energy:0,
-
-lane:0,
-
-dodged:0
-
-};
-
-});
+      const data =
+      snapshot.val();
 
 
-await update(
-ref(db,"rooms/"+roomId),
-{
+      selectedGame =
+      data.game || "ttt";
 
-started:true,
 
-game:selectedGame,
+      renderPlayers(
+        data
+      );
 
-winner:null,
 
-winnerName:null,
+      highlightGame();
 
-board:[
-"","","",
-"","","",
-"","",""
-],
 
-turn:selectedGame==="ttt"?ids[0]:null,
+      if(data.started){
 
-race:{
-winner:null,
-winnerName:null,
-startedAt:Date.now(),
-players:racePlayers
-}
+        showGame(data);
 
-}
-);
+      }
+
+      else{
+
+        $("game")
+        .classList
+        .add("hidden");
+
+        $("room")
+        .classList
+        .remove("hidden");
+
+      }
+
+
+      $("startButton")
+      .style
+      .display =
+      isHost
+      ? "block"
+      : "none";
+
+    }
+
+  );
 
 }
 
 
-/* ---------- SHOW GAME ---------- */
 
-function showGame(d){
+/* =====================================================
+   RENDER PLAYERS
+===================================================== */
 
-$("room").classList.add("hidden");
+function renderPlayers(data){
 
-$("game").classList.remove("hidden");
+  const players =
+  data.players || {};
 
-let titles={
 
-ttt:"❌⭕ Tic-Tac-Toe",
+  const ids =
+  Object.keys(players);
 
-car:"🏎️ Car Rush",
 
-bike:"🏍️ Bike Dash",
+  $("players").innerHTML =
+  ids.map(id=>{
 
-run:"🏃 Run Rush"
+    const p =
+    players[id] || {};
 
-};
 
-$("gameTitle").textContent=
-titles[d.game]||"Game";
+    return `
 
-if(d.game==="ttt"){
+      <div class="player">
 
-renderTTT(d);
+        <div>
 
-}else{
+          <span class="player-name">
 
-renderArcade(d);
+            ${
+              id===data.host
+              ? "👑 "
+              : ""
+            }
+
+            ${escapeHTML(
+              p.name || "Player"
+            )}
+
+            ${
+              id===uid
+              ? " (You)"
+              : ""
+            }
+
+          </span>
+
+        </div>
+
+        <div class="player-ready">
+
+          ${
+            p.ready
+            ? "✓ Ready"
+            : ""
+          }
+
+        </div>
+
+      </div>
+
+    `;
+
+  }).join("");
+
+
+  $("roomStatus")
+  .textContent =
+  ids.length < 2
+  ? "👥 Waiting for another player..."
+  : ids.length+" players connected.";
 
 }
 
+
+
+/* =====================================================
+   SELECT GAME
+===================================================== */
+
+async function selectGame(game){
+
+  if(!isHost){
+
+    showToast(
+      "Only the host can choose the game"
+    );
+
+    return;
+
+  }
+
+
+  selectedGame = game;
+
+
+  await update(
+    ref(
+      db,
+      "rooms/"+roomId
+    ),
+    {
+
+      game:game
+
+    }
+  );
+
+
+  highlightGame();
+
 }
+
+
+
+/* =====================================================
+   HIGHLIGHT GAME
+===================================================== */
+
+function highlightGame(){
+
+  document
+  .querySelectorAll(".game-card")
+  .forEach(button=>{
+
+    button.classList.toggle(
+      "selected",
+      button.dataset.game === selectedGame
+    );
+
+  });
+
+}
+
+
+
+/* =====================================================
+   START GAME
+===================================================== */
+
+async function startGame(){
+
+  if(!isHost){
+    showToast("Only the host can start");
+    return;
+  }
+
+  const snapshot = await get(
+    ref(db,"rooms/"+roomId+"/players")
+  );
+
+  const players = snapshot.val() || {};
+  const ids = Object.keys(players);
+
+  if(ids.length < 2){
+    showToast("Need at least 2 players");
+    return;
+  }
+
+  /* TIC TAC TOE */
+
+  if(selectedGame === "ttt"){
+
+    await update(
+      ref(db,"rooms/"+roomId),
+      {
+        started:true,
+        game:"ttt",
+
+        board:[
+          "","","",
+          "","","",
+          "","",""
+        ],
+
+        turn:ids[0],
+        winner:null,
+        winnerName:null
+      }
+    );
+
+    return;
+  }
+
+
+  /* RACE GAMES */
+
+  const racePlayers = {};
+
+  ids.forEach(id=>{
+
+    racePlayers[id] = {
+      progress:0,
+      score:0,
+      boost:0,
+      energy:0,
+      dodged:0
+    };
+
+  });
+
+
+  await update(
+    ref(db,"rooms/"+roomId),
+    {
+      started:true,
+      game:selectedGame,
+
+      winner:null,
+      winnerName:null,
+
+      race:{
+        winner:null,
+        winnerName:null,
+        players:racePlayers
+      }
+    }
+  );
+
+}
+
+
+
+/* =====================================================
+   SHOW GAME
+===================================================== */
+
+function showGame(data){
+
+  $("room").classList.add("hidden");
+  $("game").classList.remove("hidden");
+
+  const titles = {
+    ttt:"❌⭕ Tic-Tac-Toe",
+    car:"🏎️ Car Rush",
+    bike:"🏍️ Bike Dash",
+    run:"🏃 Run Rush"
+  };
+
+  $("gameTitle").textContent =
+    titles[data.game] || "Game";
+
+
+  if(data.game === "ttt"){
+    renderTTT(data);
+  }
+  else{
+    renderArcade(data);
+  }
+
+}
+
 
 
 /* =====================================================
    TIC TAC TOE
-   ===================================================== */
+===================================================== */
 
-function renderTTT(d){
+function renderTTT(data){
 
-$("arcade").classList.add("hidden");
+  $("arcade").innerHTML = "";
 
-let ids=Object.keys(d.players||{});
+  const players = data.players || {};
+  const ids = Object.keys(players);
 
-let myIndex=ids.indexOf(uid);
+  const myIndex = ids.indexOf(uid);
 
-let symbol=myIndex===0?"X":"O";
-
-if(d.winner==="Draw"){
-
-$("gameStatus").textContent="🤝 Draw!";
-
-}else if(d.winner){
-
-$("gameStatus").textContent=
-"🏆 Winner: "+d.winner;
-
-}else if(d.turn===uid){
-
-$("gameStatus").textContent=
-"Your turn — "+symbol;
-
-}else{
-
-$("gameStatus").textContent=
-"Waiting for the other player...";
-
-}
-
-let board=d.board||Array(9).fill("");
-
-$("ttt").innerHTML=`
-
-<div class="board">
-
-${board.map((value,index)=>`
-
-<button
-class="cell"
-onclick="window.playCell(${index})"
-${value?"disabled":""}
->
-
-${value}
-
-</button>
-
-`).join("")}
-
-</div>
-
-<p class="small">
-You are ${symbol}. First player is X and second player is O.
-</p>
-
-${d.winner?`
-
-<div class="finish">
-
-${d.winner==="Draw"?
-"🤝 It's a draw!":
-"🏆 "+esc(d.winner)+" wins!"}
-
-</div>
-
-`:""}
-
-`;
-
-}
+  const symbol =
+    myIndex === 0 ? "X" : "O";
 
 
-window.playCell=async function(index){
+  if(data.winner){
 
-let snap=await get(
-ref(db,"rooms/"+roomId)
-);
+    $("gameStatus").textContent =
+      data.winner === "Draw"
+      ? "🤝 It's a draw!"
+      : "🏆 "+data.winner+" wins!";
 
-let d=snap.val();
+  }
+  else if(data.turn === uid){
 
-if(!d) return;
+    $("gameStatus").textContent =
+      "🟢 Your turn — "+symbol;
 
-if(
-d.game!=="ttt"||
-d.winner||
-d.turn!==uid
-){
+  }
+  else{
 
-return;
+    $("gameStatus").textContent =
+      "⏳ Waiting for the other player...";
 
-}
+  }
 
-let ids=Object.keys(d.players||{});
 
-let myIndex=ids.indexOf(uid);
+  const board =
+    data.board ||
+    [
+      "","","",
+      "","","",
+      "","",""
+    ];
 
-let symbol=myIndex===0?"X":"O";
 
-let board=[
-...(d.board||Array(9).fill(""))
-];
+  $("ttt").innerHTML = `
 
-if(board[index]) return;
+    <div class="instructions">
 
-board[index]=symbol;
+      You are <b>${symbol}</b>.
 
-let result=checkWinner(board);
+      First player is X,
+      second player is O.
 
-let next=result?
-null:
-ids.find(id=>id!==uid);
+    </div>
 
-await update(
-ref(db,"rooms/"+roomId),
-{
+    <div class="ttt-board">
 
-board:board,
+      ${board.map((cell,index)=>`
 
-turn:next,
+        <button
+          class="ttt-cell"
+          onclick="window.playCell(${index})"
+          ${cell ? "disabled" : ""}
+        >
 
-winner:result||null
+          ${cell}
+
+        </button>
+
+      `).join("")}
+
+    </div>
+
+    ${
+      data.winner
+      ? `
+
+        <div class="winner">
+
+          ${
+            data.winner === "Draw"
+            ? "🤝 Draw!"
+            : "🏆 "+escapeHTML(data.winner)+" wins!"
+          }
+
+        </div>
+
+      `
+      : ""
+    }
+
+  `;
 
 }
-);
+
+
+
+/* =====================================================
+   TIC TAC TOE MOVE
+===================================================== */
+
+window.playCell = async function(index){
+
+  try{
+
+    const snapshot =
+      await get(
+        ref(db,"rooms/"+roomId)
+      );
+
+    if(!snapshot.exists()) return;
+
+    const data = snapshot.val();
+
+    if(data.game !== "ttt") return;
+
+    if(data.winner) return;
+
+    if(data.turn !== uid){
+
+      showToast("Not your turn");
+
+      return;
+    }
+
+
+    const players =
+      data.players || {};
+
+    const ids =
+      Object.keys(players);
+
+    const myIndex =
+      ids.indexOf(uid);
+
+    if(myIndex < 0) return;
+
+
+    const symbol =
+      myIndex === 0 ? "X" : "O";
+
+
+    const board = [
+      ...(data.board ||
+      [
+        "","","",
+        "","","",
+        "","",""
+      ])
+    ];
+
+
+    if(board[index]) return;
+
+
+    board[index] = symbol;
+
+
+    const result =
+      checkWinner(board);
+
+
+    let winner = null;
+    let nextTurn = null;
+
+
+    if(result === "Draw"){
+
+      winner = "Draw";
+
+    }
+    else if(result){
+
+      const winnerId =
+        result === "X"
+        ? ids[0]
+        : ids[1];
+
+      winner =
+        getPlayerName(
+          data,
+          winnerId
+        );
+
+    }
+    else{
+
+      nextTurn =
+        ids.find(
+          id => id !== uid
+        );
+
+    }
+
+
+    await update(
+      ref(db,"rooms/"+roomId),
+      {
+        board:board,
+        turn:nextTurn,
+        winner:winner
+      }
+    );
+
+  }
+  catch(error){
+
+    console.error(error);
+
+    showToast("Game error");
+
+  }
 
 };
 
 
+
+/* =====================================================
+   CHECK WINNER
+===================================================== */
+
 function checkWinner(board){
 
-let lines=[
+  const lines = [
 
-[0,1,2],
-[3,4,5],
-[6,7,8],
+    [0,1,2],
+    [3,4,5],
+    [6,7,8],
 
-[0,3,6],
-[1,4,7],
-[2,5,8],
+    [0,3,6],
+    [1,4,7],
+    [2,5,8],
 
-[0,4,8],
-[2,4,6]
+    [0,4,8],
+    [2,4,6]
 
-];
+  ];
 
-for(let line of lines){
 
-let[a,b,c]=line;
+  for(const line of lines){
 
-if(
-board[a] &&
-board[a]===board[b] &&
-board[b]===board[c]
-){
+    const a = line[0];
+    const b = line[1];
+    const c = line[2];
 
-return board[a];
+
+    if(
+      board[a] &&
+      board[a] === board[b] &&
+      board[b] === board[c]
+    ){
+
+      return board[a];
+
+    }
+
+  }
+
+
+  if(
+    board.every(cell => cell)
+  ){
+
+    return "Draw";
+
+  }
+
+
+  return null;
 
 }
 
+
+
+/* =====================================================
+   GET PLAYER NAME
+===================================================== */
+
+function getPlayerName(data,id){
+
+  if(id === "Draw"){
+    return "Draw";
+  }
+
+
+  const player =
+    data.players &&
+    data.players[id];
+
+
+  return player &&
+         player.name
+         ? player.name
+         : "Player";
+
 }
 
-if(board.every(Boolean)){
-
-return "Draw";
-
-}
-
-return null;
-
-}
 
 
 /* =====================================================
    ARCADE GAMES
-   ===================================================== */
+===================================================== */
 
-function renderArcade(d){
+function renderArcade(data){
 
-$("ttt").innerHTML="";
+  $("ttt").innerHTML = "";
 
-$("arcade").classList.remove("hidden");
 
-let race=d.race||{};
+  const race =
+    data.race || {};
 
-let players=race.players||{};
+  const racePlayers =
+    race.players || {};
 
-let ids=Object.keys(players);
+  const ids =
+    Object.keys(racePlayers);
 
-let names=d.players||{};
 
-let winner=race.winner;
+  let instructions = "";
 
-let game=d.game;
 
-if(winner){
+  if(data.game === "car"){
 
-$("gameStatus").innerHTML=
-`🏆 <b>${esc(race.winnerName||"Winner")}</b> won the game!`;
+    instructions = `
 
-}else{
+      🏎️ <b>Car Rush</b><br>
 
-$("gameStatus").textContent=
-"Race to 100! First player to reach the finish wins.";
+      Press ACCELERATE to move forward.
+      Collect 3 boost points and use BOOST
+      for a bigger speed increase.
+
+    `;
+
+  }
+  else if(data.game === "bike"){
+
+    instructions = `
+
+      🏍️ <b>Bike Dash</b><br>
+
+      Press PEDAL to move forward.
+      When an obstacle appears,
+      press DODGE for extra progress.
+
+    `;
+
+  }
+  else{
+
+    instructions = `
+
+      🏃 <b>Run Rush</b><br>
+
+      Tap RUN repeatedly.
+      You can also press SPACE on a keyboard.
+
+    `;
+
+  }
+
+
+  let html = `
+
+    <div class="instructions">
+
+      ${instructions}
+
+    </div>
+
+    <div class="race-info">
+
+      🏁 First player to reach 100% wins!
+
+    </div>
+
+  `;
+
+
+  ids.forEach(id=>{
+
+    const player =
+      racePlayers[id] || {};
+
+    const progress =
+      Math.min(
+        100,
+        Number(player.progress || 0)
+      );
+
+
+    const playerName =
+      getPlayerName(data,id);
+
+
+    html += `
+
+      <div class="track ${id===uid ? "me" : ""}">
+
+        <div class="track-header">
+
+          <div class="track-name">
+
+            ${
+              id === data.host
+              ? "👑 "
+              : ""
+            }
+
+            ${escapeHTML(playerName)}
+
+            ${
+              id === uid
+              ? " (You)"
+              : ""
+            }
+
+          </div>
+
+          <div class="track-percent">
+
+            ${progress}%
+
+          </div>
+
+        </div>
+
+
+        <div class="progress">
+
+          <div
+            class="progress-bar"
+            style="width:${progress}%"
+          ></div>
+
+        </div>
+
+      </div>
+
+    `;
+
+  });
+
+
+  const me =
+    racePlayers[uid] || {
+
+      progress:0,
+      score:0,
+      boost:0,
+      energy:0,
+      dodged:0
+
+    };
+
+
+  const progress =
+    Number(me.progress || 0);
+
+
+  html += `
+
+    <div class="stats">
+
+      <div class="stat">
+
+        <strong>
+          ${progress}%
+        </strong>
+
+        Progress
+
+      </div>
+
+
+      <div class="stat">
+
+        <strong>
+
+          ${
+            data.game === "car"
+            ? me.boost || 0
+
+            : data.game === "bike"
+            ? me.dodged || 0
+
+            : me.energy || 0
+          }
+
+        </strong>
+
+        ${
+          data.game === "car"
+          ? "Boost"
+
+          : data.game === "bike"
+          ? "Dodges"
+
+          : "Energy"
+        }
+
+      </div>
+
+
+      <div class="stat">
+
+        <strong>
+          ${me.score || 0}
+        </strong>
+
+        Score
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  if(race.winner){
+
+    html += `
+
+      <div class="winner">
+
+        🏆
+        ${escapeHTML(
+          race.winnerName || "Player"
+        )}
+        wins!
+
+      </div>
+
+    `;
+
+  }
+
+  else if(progress >= 100){
+
+    html += `
+
+      <div class="winner">
+
+        🏁 You finished!
+
+      </div>
+
+    `;
+
+  }
+
+  else{
+
+
+    if(data.game === "car"){
+
+      html += `
+
+        <div class="two-actions">
+
+          <button
+            class="primary action-button"
+            onclick="window.raceAction('car')"
+          >
+
+            🏎️ ACCELERATE
+
+          </button>
+
+
+          <button
+            class="orange action-button"
+            onclick="window.useBoost()"
+          >
+
+            ⚡ BOOST
+
+          </button>
+
+        </div>
+
+
+        <div class="instructions">
+
+          Need <b>3 boost</b>
+          points to use BOOST.
+
+        </div>
+
+      `;
+
+    }
+
+
+    else if(data.game === "bike"){
+
+      const obstacleActive =
+        progress > 0 &&
+        progress % 20 >= 12 &&
+        progress % 20 <= 18;
+
+
+      if(obstacleActive){
+
+        html += `
+
+          <button
+            class="orange action-button"
+            onclick="window.dodgeBike()"
+          >
+
+            🚧 DODGE OBSTACLE!
+
+          </button>
+
+        `;
+
+      }
+      else{
+
+        html += `
+
+          <button
+            class="primary action-button"
+            onclick="window.raceAction('bike')"
+          >
+
+            🏍️ PEDAL
+
+          </button>
+
+        `;
+
+      }
+
+    }
+
+
+    else{
+
+      html += `
+
+        <button
+          class="green action-button"
+          onclick="window.raceAction('run')"
+        >
+
+          🏃 RUN!
+
+        </button>
+
+
+        <div class="instructions">
+
+          💡 Keyboard:
+          press <b>SPACE</b> to run.
+
+        </div>
+
+      `;
+
+    }
+
+  }
+
+
+  $("arcade").innerHTML = html;
+
+
+  $("gameStatus").textContent =
+    race.winner
+    ? "🏆 Race complete!"
+    : "🏁 Keep going! First to 100% wins.";
 
 }
 
-
-/* Different game instructions */
-
-let instructions="";
-
-if(game==="car"){
-
-instructions=`
-🏎️ <b>Car Rush</b><br>
-Press ACCELERATE to move your car.
-Build BOOST and use it for a big speed burst.
-`;
-
-}else if(game==="bike"){
-
-instructions=`
-🏍️ <b>Bike Dash</b><br>
-Pedal forward and watch for obstacles.
-When an obstacle appears, use DODGE.
-`;
-
-}else{
-
-instructions=`
-🏃 <b>Run Rush</b><br>
-Tap RUN repeatedly to move forward.
-You can also press SPACE on a keyboard.
-`;
-
-}
-
-
-/* Tracks */
-
-let tracks=ids.map(id=>{
-
-let p=players[id]||{progress:0};
-
-let progress=Math.min(
-100,
-Number(p.progress||0)
-);
-
-let isMe=id===uid;
-
-return `
-
-<div class="track ${isMe?"myTrack":""}">
-
-<div class="trackTitle">
-
-<span>
-${id===d.host?"👑 ":""}
-${esc(names[id]?.name||"Player")}
-${isMe?" (You)":""}
-</span>
-
-<b>${progress}%</b>
-
-</div>
-
-<div class="progress">
-
-<div
-class="progressFill"
-style="width:${progress}%">
-</div>
-
-</div>
-
-</div>
-
-`;
-
-}).join("");
-
-
-let my=players[uid]||{
-
-progress:0,
-score:0,
-boost:0,
-energy:0,
-dodged:0
-
-};
-
-let progress=Number(my.progress||0);
-
-let actionHTML="";
-
-
-if(!winner && progress<100){
-
-if(game==="car"){
-
-actionHTML=`
-
-<div class="stats">
-
-<div class="stat">
-<b>${progress}%</b>
-Progress
-</div>
-
-<div class="stat">
-<b>${my.boost||0}</b>
-Boost
-</div>
-
-<div class="stat">
-<b>${my.score||0}</b>
-Speed
-</div>
-
-</div>
-
-<div class="raceButtons">
-
-<button
-class="primary bigButton"
-onclick="window.arcadeAction('car')">
-🏎️ ACCELERATE
-</button>
-
-<button
-class="orange bigButton"
-onclick="window.arcadeBoost()">
-⚡ BOOST
-</button>
-
-</div>
-
-`;
-
-}else if(game==="bike"){
-
-let obstacle=
-progress>0 &&
-Math.floor(progress/25)!==
-Math.floor((progress+5)/25);
-
-actionHTML=`
-
-<div class="stats">
-
-<div class="stat">
-<b>${progress}%</b>
-Progress
-</div>
-
-<div class="stat">
-<b>${my.dodged||0}</b>
-Dodges
-</div>
-
-<div class="stat">
-<b>${my.score||0}</b>
-Speed
-</div>
-
-</div>
-
-${obstacle?`
-
-<button
-class="orange bigButton"
-onclick="window.bikeDodge()">
-🚧 DODGE OBSTACLE!
-</button>
-
-`:
-
-<button
-class="primary bigButton"
-onclick="window.arcadeAction('bike')">
-🏍️ PEDAL
-</button>
-
-}
-
-`;
-
-}else{
-
-actionHTML=`
-
-<div class="stats">
-
-<div class="stat">
-<b>${progress}%</b>
-Progress
-</div>
-
-<div class="stat">
-<b>${my.energy||0}</b>
-Energy
-</div>
-
-<div class="stat">
-<b>${my.score||0}</b>
-Steps
-</div>
-
-</div>
-
-<button
-class="green bigButton"
-onclick="window.arcadeAction('run')">
-🏃 RUN!
-</button>
-
-`;
-
-}
-
-}else{
-
-actionHTML=`
-
-<div class="finish">
-
-${winner?
-"🏆 "+esc(race.winnerName||"Winner")+" wins!":
-"🏁 Finished!"}
-
-</div>
-
-`;
-
-}
-
-
-$("arcade").innerHTML=`
-
-<div class="instructions">
-
-${instructions}
-
-</div>
-
-<h3>🏁 Race Track</h3>
-
-${tracks}
-
-${actionHTML}
-
-`;
-
-}
 
 
 /* =====================================================
-   ARCADE ACTION
-   ===================================================== */
+   RACE ACTION
+===================================================== */
 
-window.arcadeAction=async function(game){
+window.raceAction =
+async function(game){
 
-let snap=await get(
-ref(db,"rooms/"+roomId)
-);
+  try{
 
-let d=snap.val();
+    const snapshot =
+      await get(
+        ref(db,"rooms/"+roomId)
+      );
 
-if(!d||d.game!==game) return;
 
-if(d.race?.winner) return;
+    if(!snapshot.exists()) return;
 
-let me=d.race?.players?.[uid];
 
-if(!me) return;
+    const data =
+      snapshot.val();
 
-let oldProgress=Number(me.progress||0);
 
-let add=0;
+    if(data.game !== game) return;
 
-if(game==="car"){
 
-add=5;
+    if(data.race?.winner) return;
 
-}else if(game==="bike"){
 
-add=5;
+    const player =
+      data.race?.players?.[uid];
 
-}else if(game==="run"){
 
-add=4;
+    if(!player) return;
 
-}
 
-let newProgress=Math.min(
-100,
-oldProgress+add
-);
+    let progress =
+      Number(
+        player.progress || 0
+      );
 
-let updates={};
 
-updates[
-"rooms/"+roomId+
-"/race/players/"+uid+
-"/progress"
-]=newProgress;
+    let amount = 5;
 
-updates[
-"rooms/"+roomId+
-"/race/players/"+uid+
-"/score"
-]=Number(me.score||0)+1;
 
-if(game==="car"){
+    if(game === "run"){
 
-updates[
-"rooms/"+roomId+
-"/race/players/"+uid+
-"/boost"
-]=Math.min(
-5,
-Number(me.boost||0)+1
-);
+      amount = 4;
 
-}
+    }
 
-if(game==="run"){
 
-updates[
-"rooms/"+roomId+
-"/race/players/"+uid+
-"/energy"
-]=Math.min(
-10,
-Number(me.energy||0)+1
-);
+    progress =
+      Math.min(
+        100,
+        progress + amount
+      );
 
-}
 
-await update(
-ref(db),
-updates
-);
+    const changes = {
 
-if(newProgress>=100){
+      progress:progress,
 
-await claimWinner();
+      score:
+        Number(player.score || 0) + 1
 
-}
+    };
+
+
+    if(game === "car"){
+
+      changes.boost =
+        Math.min(
+          5,
+          Number(player.boost || 0) + 1
+        );
+
+    }
+
+
+    if(game === "run"){
+
+      changes.energy =
+        Math.min(
+          10,
+          Number(player.energy || 0) + 1
+        );
+
+    }
+
+
+    await update(
+      ref(
+        db,
+        "rooms/"+roomId+
+        "/race/players/"+uid
+      ),
+      changes
+    );
+
+
+    if(progress >= 100){
+
+      await claimRaceWinner();
+
+    }
+
+  }
+  catch(error){
+
+    console.error(error);
+
+  }
 
 };
+
 
 
 /* =====================================================
    CAR BOOST
-   ===================================================== */
+===================================================== */
 
-window.arcadeBoost=async function(){
+window.useBoost =
+async function(){
 
-let snap=await get(
-ref(db,"rooms/"+roomId)
-);
+  try{
 
-let d=snap.val();
+    const snapshot =
+      await get(
+        ref(db,"rooms/"+roomId)
+      );
 
-if(!d||d.game!=="car") return;
 
-if(d.race?.winner) return;
+    if(!snapshot.exists()) return;
 
-let me=d.race?.players?.[uid];
 
-if(!me) return;
+    const data =
+      snapshot.val();
 
-let boost=Number(me.boost||0);
 
-if(boost<3){
+    if(
+      data.game !== "car" ||
+      data.race?.winner
+    ){
 
-toast("Need 3 boost points!");
+      return;
 
-return;
+    }
 
-}
 
-let newProgress=Math.min(
-100,
-Number(me.progress||0)+15
-);
+    const player =
+      data.race?.players?.[uid];
 
-await update(
-ref(db,"rooms/"+roomId+
-"/race/players/"+uid),
-{
 
-progress:newProgress,
+    if(!player) return;
 
-boost:0,
 
-score:Number(me.score||0)+3
+    const boost =
+      Number(player.boost || 0);
 
-}
-);
 
-if(newProgress>=100){
+    if(boost < 3){
 
-await claimWinner();
+      showToast(
+        "You need 3 boost points!"
+      );
 
-}
+      return;
+
+    }
+
+
+    const progress =
+      Math.min(
+        100,
+        Number(player.progress || 0) + 15
+      );
+
+
+    await update(
+      ref(
+        db,
+        "rooms/"+roomId+
+        "/race/players/"+uid
+      ),
+      {
+
+        progress:progress,
+
+        boost:0,
+
+        score:
+          Number(player.score || 0) + 3
+
+      }
+    );
+
+
+    if(progress >= 100){
+
+      await claimRaceWinner();
+
+    }
+
+  }
+  catch(error){
+
+    console.error(error);
+
+  }
 
 };
 
 
-/* ===============================
+
+/* =====================================================
+   BIKE DODGE
+===================================================== */
+
+window.dodgeBike =
+async function(){
+
+  try{
+
+    const snapshot =
+      await get(
+        ref(db,"rooms/"+roomId)
+      );
+
+
+    if(!snapshot.exists()) return;
+
+
+    const data =
+      snapshot.val();
+
+
+    if(
+      data.game !== "bike" ||
+      data.race?.winner
+    ){
+
+      return;
+
+    }
+
+
+    const player =
+      data.race?.players?.[uid];
+
+
+    if(!player) return;
+
+
+    const progress =
+      Math.min(
+        100,
+        Number(player.progress || 0) + 8
+      );
+
+
+    await update(
+      ref(
+        db,
+        "rooms/"+roomId+
+        "/race/players/"+uid
+      ),
+      {
+
+        progress:progress,
+
+        dodged:
+          Number(player.dodged || 0) + 1,
+
+        score:
+          Number(player.score || 0) + 2
+
+      }
+    );
+
+
+    if(progress >= 100){
+
+      await claimRaceWinner();
+
+    }
+
+  }
+  catch(error){
+
+    console.error(error);
+
+  }
+
+};
+
+
+
+/* =====================================================
+   CLAIM WINNER
+===================================================== */
+
+async function claimRaceWinner(){
+
+  const winnerRef =
+    ref(
+      db,
+      "rooms/"+roomId+
+      "/race/winner"
+    );
+
+
+  const result =
+    await runTransaction(
+      winnerRef,
+      currentWinner => {
+
+        if(currentWinner){
+
+          return;
+
+        }
+
+        return uid;
+
+      }
+    );
+
+
+  if(
+    result.committed &&
+    result.snapshot.val() === uid
+  ){
+
+    const snapshot =
+      await get(
+        ref(
+          db,
+          "rooms/"+roomId+
+          "/players/"+uid
+        )
+      );
+
+
+    const player =
+      snapshot.val();
+
+
+    await update(
+      ref(
+        db,
+        "rooms/"+roomId+
+        "/race"
+      ),
+      {
+
+        winner:uid,
+
+        winnerName:
+          player?.name || "Player"
+
+      }
+    );
+
+  }
+
+}
+
+
+
+/* =====================================================
+   BACK TO ROOM
+===================================================== */
+
+async function backToRoom(){
+
+  if(!roomId) return;
+
+
+  if(!isHost){
+
+    showToast(
+      "Only the host can return to the room"
+    );
+
+    return;
+
+  }
+
+
+  await update(
+    ref(db,"rooms/"+roomId),
+    {
+
+      started:false,
+
+      winner:null,
+
+      winnerName:null,
+
+      board:null,
+
+      turn:null,
+
+      race:null
+
+    }
+  );
+
+}
+
+
+
+/* =====================================================
+   LEAVE ROOM
+===================================================== */
+
+async function leaveRoom(){
+
+  try{
+
+    if(roomId && uid){
+
+      if(isHost){
+
+        await remove(
+          ref(db,"rooms/"+roomId)
+        );
+
+      }
+      else{
+
+        await remove(
+          ref(
+            db,
+            "rooms/"+roomId+
+            "/players/"+uid
+          )
+        );
+
+      }
+
+    }
+
+  }
+  catch(error){
+
+    console.error(error);
+
+  }
+
+
+  location.reload();
+
+}
+
+
+
+/* =====================================================
+   COPY ROOM CODE
+===================================================== */
+
+async function copyCode(){
+
+  try{
+
+    await navigator.clipboard
+      .writeText(roomId);
+
+    showToast(
+      "Room code copied!"
+    );
+
+  }
+  catch(error){
+
+    showToast(
+      "Room code: "+roomId
+    );
+
+  }
+
+}
+
+
+
+/* =====================================================
+   READY PLAYER
+===================================================== */
+
+async function readyPlayer(){
+
+  if(!roomId || !uid) return;
+
+
+  await update(
+    ref(
+      db,
+      "rooms/"+roomId+
+      "/players/"+uid
+    ),
+    {
+
+      ready:true
+
+    }
+  );
+
+}
+
+
+
+/* =====================================================
+   KEYBOARD CONTROLS
+===================================================== */
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if(event.code !== "Space"){
+      return;
+    }
+
+
+    if(
+      $("game")
+      .classList
+      .contains("hidden")
+    ){
+
+      return;
+
+    }
+
+
+    if(
+      $("gameTitle")
+      .textContent
+      .includes("Run Rush")
+    ){
+
+      event.preventDefault();
+
+      window.raceAction("run");
+
+    }
+
+  }
+);
+
+
+
+/* =====================================================
+   EXPOSE FUNCTIONS
+===================================================== */
+
+window.createRoom =
+  createRoom;
+
+window.showJoin =
+  showJoin;
+
+window.joinRoom =
+  joinRoom;
+
+window.selectGame =
+  selectGame;
+
+window.startGame =
+  startGame;
+
+window.backToRoom =
+  backToRoom;
+
+window.leaveRoom =
+  leaveRoom;
+
+window.copyCode =
+  copyCode;
+
+window.readyPlayer =
+  readyPlayer;
+
+
+</script>
+
+</body>
+
+</html>
