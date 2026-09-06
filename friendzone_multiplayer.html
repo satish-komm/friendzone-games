@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FriendZone — Online Multiplayer</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#080b17;color:#fff}
+header{background:linear-gradient(135deg,#191e49,#0b1024);padding:24px 16px}.wrap{max-width:900px;margin:auto}
+h1{margin:0;font-size:31px}h2{margin:0 0 12px}p{color:#aab2d5}.card{background:#12172a;border:1px solid #293151;border-radius:20px;padding:18px;margin:16px 0}
+input,select{width:100%;padding:14px;border-radius:12px;border:1px solid #343d61;background:#090d1b;color:#fff;font-size:16px;margin:6px 0 12px}
+button{border:0;border-radius:13px;padding:13px 16px;font-weight:800;cursor:pointer}.primary{background:#6c63ff;color:#fff}.secondary{background:#252d4b;color:#fff}.danger{background:#d84b68;color:#fff}
+.row{display:flex;gap:10px;flex-wrap:wrap}.row>*{flex:1}.hidden{display:none}.roomcode{font-size:35px;letter-spacing:7px;text-align:center;font-weight:900;margin:10px 0;color:#a9a3ff}
+.players{display:grid;gap:8px}.player{background:#1b2139;border-radius:12px;padding:11px}
+.status{padding:10px 12px;background:#1a2038;border-radius:12px;color:#c7cdf0;margin:10px 0}.good{color:#70e1a5}.bad{color:#ff8fa5}
+.games{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}.gamepick{padding:15px;background:#1a2038;border:1px solid #30385b;border-radius:15px;color:white;text-align:left}.gamepick.selected{outline:2px solid #7b73ff}
+.board{display:grid;grid-template-columns:repeat(3,90px);gap:8px;justify-content:center;margin:18px auto}.cell{width:90px;height:90px;font-size:35px;background:#202744;color:#fff}.small{font-size:12px;color:#8993b8}
+#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#171d35;padding:12px 16px;border-radius:12px;display:none;z-index:10}
+</style>
+</head>
+<body>
+<header><div class="wrap"><h1>🎮 FriendZone</h1><p>Play mini-games with friends online</p></div></header>
+<main class="wrap">
+<section id="setup" class="card">
+<h2>Start playing</h2>
+<label>Your nickname</label><input id="name" maxlength="18" placeholder="Enter your name">
+<div class="row"><button class="primary" onclick="createRoom()">➕ Create Room</button><button class="secondary" onclick="showJoin()">🔗 Join Room</button></div>
+<div id="joinBox" class="hidden"><input id="joinCode" maxlength="6" placeholder="6-digit room code"><button class="primary" onclick="joinRoom()">Join</button></div>
+<p class="small">You'll need to connect this page to your Firebase project once. The steps are below.</p>
+</section>
+
+<section id="room" class="card hidden">
+<button class="danger" style="float:right" onclick="leaveRoom()">Leave</button>
+<h2>Room</h2><div class="roomcode" id="code">------</div>
+<div class="row"><button class="secondary" onclick="copyCode()">📋 Copy code</button><button class="primary" id="startBtn" onclick="startSelected()">▶ Start Game</button></div>
+<div class="status" id="roomStatus">Waiting for players...</div>
+<h3>Players</h3><div class="players" id="players"></div>
+<h3>Choose a game</h3>
+<div class="games">
+<button class="gamepick selected" data-game="ttt" onclick="selectGame('ttt')">❌⭕<br>Tic-Tac-Toe</button>
+<button class="gamepick" data-game="car" onclick="selectGame('car')">🏎️<br>Car Rush</button>
+<button class="gamepick" data-game="bike" onclick="selectGame('bike')">🏍️<br>Bike Dash</button>
+<button class="gamepick" data-game="run" onclick="selectGame('run')">🏃<br>Run Rush</button>
+</div>
+</section>
+
+<section id="game" class="card hidden">
+<button class="secondary" style="float:right" onclick="backToRoom()">Room</button>
+<h2 id="gameTitle">Tic-Tac-Toe</h2><div class="status" id="gameStatus">Loading...</div>
+<div id="ttt"></div><div id="arcade" class="hidden">
+<p>Arcade games are next in the multiplayer engine. This room already synchronizes players and game selection in real time.</p>
+<button class="primary" onclick="sendReady()">I'm Ready</button>
+</div>
+</section>
+
+<section class="card">
+<h2>📱 How to connect it</h2>
+<p>1. Create a Firebase project and register a Web app.</p>
+<p>2. Create <b>Realtime Database</b> and enable <b>Anonymous Authentication</b>.</p>
+<p>3. Copy your Firebase web configuration into the marked section in this file.</p>
+<p>4. Put this HTML on an HTTPS web host. Your friends open the same website and use the room code.</p>
+<p class="small">The database is realtime, so changes made by one player are pushed to the other players automatically.</p>
+</section>
+</main>
+<div id="toast"></div>
+
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+import {getDatabase,ref,set,get,update,onValue,remove} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-database.js";
+import {getAuth,signInAnonymously,onAuthStateChanged} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+
+/* ====== PASTE YOUR FIREBASE CONFIG HERE ====== */
+const firebaseConfig = {
+  apiKey: "AIzaSyBzLchy5M2fLne4c7Ghw1KNN8wVrlZdd8M",
+  authDomain: "friendsgame-872f5.firebaseapp.com",
+  databaseURL: "https://friendsgame-872f5-default-rtdb.firebaseio.com",
+  projectId: "friendsgame-872f5",
+  storageBucket: "friendsgame-872f5.firebasestorage.app",
+  messagingSenderId: "522534013233",
+  appId: "1:522534013233:web:f5faa6e6795023d0420810",
+  measurementId: "G-PW5H3G97QR"
+};
+/* ============================================= */
+
+let app,db,auth,uid=null,roomId=null,isHost=false,selectedGame="ttt",unsubscribe=null;
+const $=id=>document.getElementById(id);
+const toast=m=>{let t=$("toast");t.textContent=m;t.style.display="block";setTimeout(()=>t.style.display="none",2200)};
+function cleanName(){return ($("name").value.trim()||"Player").slice(0,18)}
+function validConfig(){return !firebaseConfig.apiKey.startsWith("PASTE_") && !firebaseConfig.databaseURL.includes("PASTE_")}
+async function boot(){
+ if(!validConfig()){toast("Add your Firebase config first");return}
+ app=initializeApp(firebaseConfig);db=getDatabase(app);auth=getAuth(app);
+ try{
+  await signInAnonymously(auth);
+  uid=auth.currentUser?.uid || null;
+}catch(e){toast("Anonymous sign-in failed. Check Firebase Authentication.")}
+}
+if(validConfig()) boot();
+
+function code(){return String(Math.floor(100000+Math.random()*900000))}
+async function uniqueCode(){for(let i=0;i<8;i++){let c=code(),s=await get(ref(db,"rooms/"+c));if(!s.exists())return c}throw Error("Try again")}
+async function createRoom(){
+ if(!validConfig())return toast("Add Firebase config first");
+ if(!uid){uid=auth.currentUser?.uid;if(!uid)return toast("Connecting...")}
+ let c=await uniqueCode(),name=cleanName();
+ roomId=c;isHost=true;
+ await set(ref(db,"rooms/"+c),{host:uid,game:"ttt",started:false,createdAt:Date.now(),players:{[uid]:{name,ready:false}}});
+ openRoom();listenRoom();
+}
+async function joinRoom(){
+ if(!validConfig())return toast("Add Firebase config first");
+ let c=$("joinCode").value.trim(),snap=await get(ref(db,"rooms/"+c));
+ if(!snap.exists())return toast("Room not found");
+ if(!uid)uid=auth.currentUser?.uid;if(!uid)return toast("Connecting...");
+ let data=snap.val();let count=Object.keys(data.players||{}).length;if(count>=4)return toast("Room is full");
+ roomId=c;isHost=false;
+ await update(ref(db,"rooms/"+c+"/players/"+uid),{name:cleanName(),ready:false});
+ openRoom();listenRoom();
+}
+function showJoin(){$("joinBox").classList.toggle("hidden");$("joinCode").focus()}
+function openRoom(){$("setup").classList.add("hidden");$("room").classList.remove("hidden");$("game").classList.add("hidden");$("code").textContent=roomId}
+function listenRoom(){
+ if(unsubscribe)unsubscribe();
+ unsubscribe=onValue(ref(db,"rooms/"+roomId),snap=>{
+  if(!snap.exists()){toast("Room closed");location.reload();return}
+  let d=snap.val(),ps=d.players||{};$("code").textContent=roomId;
+  $("players").innerHTML=Object.entries(ps).map(([id,p])=>`<div class="player">${id===d.host?"👑 ":""}${esc(p.name)} ${p.ready?"<span class='good'>✓ Ready</span>":""}</div>`).join("");
+  $("roomStatus").textContent=d.started?"Game started!":"Share the code with your friends.";
+  $("startBtn").style.display=isHost?"block":"none";
+  selectedGame=d.game||"ttt";highlight();
+  if(d.started){showGame(d)}
+  else {$("game").classList.add("hidden");$("room").classList.remove("hidden")}
+ });
+}
+function esc(s){return s.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+function selectGame(g){if(!isHost)return toast("Only the host chooses the game");selectedGame=g;update(ref(db,"rooms/"+roomId),{game:g});highlight()}
+function highlight(){document.querySelectorAll(".gamepick").forEach(b=>b.classList.toggle("selected",b.dataset.game===selectedGame))}
+async function startSelected(){if(!isHost)return;let snap=await get(ref(db,"rooms/"+roomId+"/players"));if(Object.keys(snap.val()||{}).length<2)return toast("Need at least 2 players");await update(ref(db,"rooms/"+roomId),{started:true,game:selectedGame,turn:Object.keys(snap.val())[0],board:["","","","","","","","",""]})}
+function showGame(d){
+ $("room").classList.add("hidden");$("game").classList.remove("hidden");
+ let titles={ttt:"❌⭕ Tic-Tac-Toe",car:"🏎️ Car Rush",bike:"🏍️ Bike Dash",run:"🏃 Run Rush"};$("gameTitle").textContent=titles[d.game]||"Game";
+ if(d.game==="ttt")renderTTT(d);else{$("ttt").innerHTML="";$("arcade").classList.remove("hidden");$("gameStatus").textContent="Multiplayer room is connected. Arcade synchronization will use the same room."; }
+}
+function renderTTT(d){
+ $("arcade").classList.add("hidden");let ids=Object.keys(d.players||{}),me=uid,myIndex=ids.indexOf(me),symbol=myIndex===0?"X":"O";
+ $("gameStatus").textContent=d.winner?`Winner: ${d.winner}`:(d.turn===me?`Your turn — ${symbol}`:"Waiting for the other player...");
+ let b=d.board||Array(9).fill("");$("ttt").innerHTML=`<div class="board">${b.map((v,i)=>`<button class="cell" onclick="window.playCell(${i})">${v}</button>`).join("")}</div><p class="small">You are ${symbol}. First two players are X and O.</p>`;
+}
+window.playCell=async i=>{
+ let snap=await get(ref(db,"rooms/"+roomId));let d=snap.val();if(d.game!=="ttt"||d.winner||d.turn!==uid)return;
+ let ids=Object.keys(d.players||{}),symbol=ids.indexOf(uid)===0?"X":"O",b=[...(d.board||Array(9).fill(""))];if(b[i])return;b[i]=symbol;
+ let winner=checkWinner(b),next=winner?null:ids.find(x=>x!==uid);await update(ref(db,"rooms/"+roomId),{board:b,turn:next,winner:winner||null});
+}
+function checkWinner(b){let lines=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];for(let l of lines)if(b[l[0]]&&b[l[0]]===b[l[1]]&&b[l[1]]===b[l[2]])return b[l[0]];return b.every(Boolean)?"Draw":null}
+async function backToRoom(){await update(ref(db,"rooms/"+roomId),{started:false,winner:null,board:["","","","","","","","",""]});$("game").classList.add("hidden");$("room").classList.remove("hidden")}
+async function leaveRoom(){if(roomId&&uid){if(isHost)await remove(ref(db,"rooms/"+roomId));else await remove(ref(db,"rooms/"+roomId+"/players/"+uid))}location.reload()}
+async function copyCode(){try{await navigator.clipboard.writeText(roomId);toast("Room code copied")}catch(e){toast("Code: "+roomId)}}
+async function sendReady(){await update(ref(db,"rooms/"+roomId+"/players/"+uid),{ready:true})}
+window.createRoom=createRoom;window.joinRoom=joinRoom;window.showJoin=showJoin;window.selectGame=selectGame;window.startSelected=startSelected;window.backToRoom=backToRoom;window.leaveRoom=leaveRoom;window.copyCode=copyCode;window.sendReady=sendReady;
+</script>
+</body>
+</html>
