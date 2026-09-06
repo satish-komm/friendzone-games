@@ -2,19 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Apex Circuit - 2 Player Multiplayer Racer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Apex Circuit - Mobile & PC Multiplayer Racer</title>
   <style>
     :root {
       --bg: #090d16;
       --panel: #131d2e;
       --accent: #38bdf8;
-      --neon-green: #22c55e;
-      --neon-red: #ef4444;
+      --green: #22c55e;
+      --red: #ef4444;
       --text: #f8fafc;
       --muted: #64748b;
     }
-    * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; margin: 0; padding: 0; }
+    * { 
+      box-sizing: border-box; 
+      font-family: system-ui, -apple-system, sans-serif; 
+      margin: 0; 
+      padding: 0; 
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
     body {
       background: var(--bg);
       color: var(--text);
@@ -23,7 +31,8 @@
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      overflow: hidden;
+      overflow-x: hidden;
+      touch-action: manipulation;
     }
 
     /* Lobby Panels */
@@ -31,14 +40,14 @@
       background: var(--panel);
       border: 1px solid #1e293b;
       border-radius: 14px;
-      padding: 2rem;
+      padding: 1.5rem;
       width: 90%;
-      max-width: 440px;
+      max-width: 420px;
       box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
       text-align: center;
     }
-    h1 { font-size: 1.8rem; margin-bottom: 0.25rem; color: var(--accent); letter-spacing: 1px; }
-    p.sub { color: var(--muted); font-size: 0.85rem; margin-bottom: 1.5rem; }
+    h1 { font-size: 1.7rem; margin-bottom: 0.25rem; color: var(--accent); letter-spacing: 1px; }
+    p.sub { color: var(--muted); font-size: 0.85rem; margin-bottom: 1.25rem; }
 
     .tabs { display: flex; gap: 8px; margin-bottom: 1.25rem; }
     .tab {
@@ -50,7 +59,6 @@
       color: var(--text);
       cursor: pointer;
       font-weight: 600;
-      transition: all 0.2s;
     }
     .tab.active { background: var(--accent); color: #090d16; border-color: var(--accent); }
 
@@ -81,7 +89,7 @@
       background: #090d16;
       border: 2px dashed var(--accent);
       border-radius: 8px;
-      padding: 1rem;
+      padding: 0.85rem;
       font-size: 2.2rem;
       font-weight: 800;
       letter-spacing: 6px;
@@ -96,27 +104,88 @@
       align-items: center;
       width: 100%;
       max-width: 900px;
+      padding: 0.5rem;
     }
     .hud {
       display: flex;
       justify-content: space-between;
       width: 100%;
-      padding: 0.5rem 1rem;
+      max-width: 880px;
+      padding: 0.4rem 0.8rem;
       font-weight: 600;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: var(--muted);
     }
     .hud span b { color: var(--text); }
+    
+    .canvas-wrapper {
+      width: 100%;
+      max-width: 880px;
+      position: relative;
+    }
     canvas {
       background: #14532d;
-      border: 3px solid #334155;
+      border: 2px solid #334155;
       border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      width: 100%;
+      height: auto;
+      display: block;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
     }
-    .controls-hint {
-      margin-top: 0.5rem;
+
+    /* Mobile Controls Layout */
+    .mobile-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      max-width: 880px;
+      margin-top: 0.8rem;
+      padding: 0 0.5rem;
+    }
+    .ctrl-group {
+      display: flex;
+      gap: 12px;
+    }
+    .touch-btn {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: rgba(30, 41, 59, 0.85);
+      border: 2px solid #475569;
+      color: #f8fafc;
+      font-size: 1.5rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      user-select: none;
+      touch-action: none;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    }
+    .touch-btn:active, .touch-btn.active {
+      background: var(--accent);
+      color: #090d16;
+      border-color: var(--accent);
+      transform: scale(0.95);
+    }
+    .touch-btn.gas:active, .touch-btn.gas.active {
+      background: var(--green);
+      color: #fff;
+      border-color: var(--green);
+    }
+    .touch-btn.brake:active, .touch-btn.brake.active {
+      background: var(--red);
+      color: #fff;
+      border-color: var(--red);
+    }
+
+    .keyboard-hint {
       color: var(--muted);
-      font-size: 0.8rem;
+      font-size: 0.75rem;
+      margin-top: 0.4rem;
+      text-align: center;
     }
     .hidden { display: none !important; }
   </style>
@@ -126,7 +195,7 @@
   <!-- MATCHMAKING LOBBY -->
   <div class="panel" id="lobby-panel">
     <h1>APEX CIRCUIT</h1>
-    <p class="sub">Real-Time Multiplayer Driving & Racing</p>
+    <p class="sub">Play on Mobile or PC</p>
 
     <div class="tabs">
       <button class="tab active" id="tab-create">Create Match</button>
@@ -170,8 +239,26 @@
       <span>Speed: <b id="hud-speed">0</b> km/h</span>
       <span>Lap: <b id="hud-lap">1/3</b></span>
     </div>
-    <canvas id="raceTrack" width="880" height="520"></canvas>
-    <div class="controls-hint">Drive: [W / ↑] Gas | [S / ↓] Brake & Reverse | [A / ←] Steer Left | [D / →] Steer Right</div>
+
+    <div class="canvas-wrapper">
+      <canvas id="raceTrack" width="880" height="520"></canvas>
+    </div>
+
+    <!-- Mobile Touch Controls -->
+    <div class="mobile-controls">
+      <!-- Steering Left / Right -->
+      <div class="ctrl-group">
+        <div class="touch-btn" id="btn-left">◀</div>
+        <div class="touch-btn" id="btn-right">▶</div>
+      </div>
+      <!-- Gas / Brake -->
+      <div class="ctrl-group">
+        <div class="touch-btn brake" id="btn-brake">REV</div>
+        <div class="touch-btn gas" id="btn-gas">GAS</div>
+      </div>
+    </div>
+
+    <div class="keyboard-hint">PC: [W / ↑] Gas | [S / ↓] Brake | [A / ←] Left | [D / →] Right</div>
     <button id="btn-rematch" class="btn-action hidden" style="margin-top: 10px; max-width: 200px;">Race Again</button>
   </div>
 
@@ -203,12 +290,11 @@
     let roomCode = null;
     let playerRole = null; // "p1" or "p2"
 
-    // Sign in player anonymously
     signInAnonymously(auth).then(cred => {
       myUid = cred.user.uid;
     });
 
-    // UI Wire-up
+    // UI Elements
     const tabCreate = document.getElementById("tab-create");
     const tabJoin = document.getElementById("tab-join");
     const secCreate = document.getElementById("section-create");
@@ -247,16 +333,14 @@
       return code;
     }
 
-    // Vehicle Specifications
     const SPECS = {
-      car: { accel: 0.12, maxSpeed: 4.8, turnSpeed: 0.045, friction: 0.98, length: 32, width: 16, color: "#38bdf8" },
-      bike: { accel: 0.16, maxSpeed: 4.4, turnSpeed: 0.065, friction: 0.97, length: 26, width: 10, color: "#ef4444" }
+      car: { accel: 0.12, maxSpeed: 4.8, turnSpeed: 0.045, friction: 0.98 },
+      bike: { accel: 0.16, maxSpeed: 4.4, turnSpeed: 0.065, friction: 0.97 }
     };
 
-    // Local physics simulation state
     const localDriver = {
       x: 440,
-      y: 440,
+      y: 425,
       angle: 0,
       speed: 0,
       lap: 1,
@@ -269,8 +353,10 @@
     let roomStatus = "waiting";
     let winner = null;
 
-    // Keys State
+    // Controls System (Both Keyboard & Touch)
     const keys = { forward: false, backward: false, left: false, right: false };
+
+    // Keyboard handlers
     window.addEventListener("keydown", (e) => {
       if (e.key === "w" || e.key === "W" || e.key === "ArrowUp") keys.forward = true;
       if (e.key === "s" || e.key === "S" || e.key === "ArrowDown") keys.backward = true;
@@ -284,7 +370,26 @@
       if (e.key === "d" || e.key === "D" || e.key === "ArrowRight") keys.right = false;
     });
 
-    // Create Match
+    // Touch handlers for mobile
+    function setupTouchBtn(elementId, keyProp) {
+      const btn = document.getElementById(elementId);
+      const start = (e) => { e.preventDefault(); keys[keyProp] = true; btn.classList.add("active"); };
+      const end = (e) => { e.preventDefault(); keys[keyProp] = false; btn.classList.remove("active"); };
+
+      btn.addEventListener("touchstart", start, { passive: false });
+      btn.addEventListener("touchend", end, { passive: false });
+      btn.addEventListener("touchcancel", end, { passive: false });
+      btn.addEventListener("mousedown", start);
+      btn.addEventListener("mouseup", end);
+      btn.addEventListener("mouseleave", end);
+    }
+
+    setupTouchBtn("btn-left", "left");
+    setupTouchBtn("btn-right", "right");
+    setupTouchBtn("btn-gas", "forward");
+    setupTouchBtn("btn-brake", "backward");
+
+    // Matchmaking: Create
     document.getElementById("btn-create").onclick = async () => {
       if (!myUid) return alert("Establishing server connection...");
       const name = document.getElementById("create-name").value.trim() || "Host";
@@ -295,7 +400,7 @@
       localDriver.type = vehicle;
       localDriver.name = name;
       localDriver.x = 440;
-      localDriver.y = 425; // Top row of grid
+      localDriver.y = 425;
       localDriver.angle = 0;
 
       const roomRef = ref(db, `race_lobbies/${roomCode}`);
@@ -312,21 +417,21 @@
       listenToRoom(roomCode);
     };
 
-    // Join Match
+    // Matchmaking: Join
     document.getElementById("btn-join").onclick = async () => {
       if (!myUid) return alert("Establishing server connection...");
       const code = document.getElementById("join-code").value.trim().toUpperCase();
       const name = document.getElementById("join-name").value.trim() || "Challenger";
       const vehicle = document.getElementById("join-vehicle").value;
 
-      if (code.length !== 4) return alert("Please enter the 4-letter code");
+      if (code.length !== 4) return alert("Please enter a 4-letter code");
 
       const roomRef = ref(db, `race_lobbies/${code}`);
       const snap = await get(roomRef);
 
       if (!snap.exists()) return alert("Room does not exist.");
       const data = snap.val();
-      if (data.p2) return alert("Match already full.");
+      if (data.p2) return alert("Match is already full.");
 
       roomCode = code;
       playerRole = "p2";
@@ -334,7 +439,7 @@
       localDriver.type = vehicle;
       localDriver.name = name;
       localDriver.x = 440;
-      localDriver.y = 455; // Bottom row of grid
+      localDriver.y = 455;
       localDriver.angle = 0;
 
       await update(roomRef, {
@@ -345,7 +450,7 @@
       listenToRoom(roomCode);
     };
 
-    // Listen to Firebase room sync
+    // Firebase Listener
     function listenToRoom(code) {
       const roomRef = ref(db, `race_lobbies/${code}`);
       const myRef = ref(db, `race_lobbies/${code}/${playerRole}/connected`);
@@ -358,13 +463,9 @@
         roomStatus = data.status;
         winner = data.winner;
 
-        // Populate opponent state
         const oppKey = playerRole === "p1" ? "p2" : "p1";
-        if (data[oppKey]) {
-          opponentDriver = data[oppKey];
-        }
+        if (data[oppKey]) opponentDriver = data[oppKey];
 
-        // Switch to game screen when ready
         if (data.status === "racing" && lobbyPanel.style.display !== "none") {
           lobbyPanel.style.display = "none";
           gameContainer.style.display = "flex";
@@ -378,10 +479,10 @@
       });
     }
 
-    // Rematch Reset
+    // Rematch
     btnRematch.onclick = async () => {
       const roomRef = ref(db, `race_lobbies/${roomCode}`);
-      localDriver.x = playerRole === "p1" ? 440 : 440;
+      localDriver.x = 440;
       localDriver.y = playerRole === "p1" ? 425 : 455;
       localDriver.angle = 0;
       localDriver.speed = 0;
@@ -400,7 +501,7 @@
       btnRematch.classList.add("hidden");
     };
 
-    // Physics Loop & Network Syncer
+    // Physics Engine & Realtime Syncer
     let lastNetworkSync = 0;
 
     function updatePhysics() {
@@ -412,7 +513,7 @@
       if (keys.forward) localDriver.speed += spec.accel;
       if (keys.backward) localDriver.speed -= spec.accel * 0.7;
 
-      // Friction & Clamping
+      // Friction
       localDriver.speed *= spec.friction;
       if (localDriver.speed > spec.maxSpeed) localDriver.speed = spec.maxSpeed;
       if (localDriver.speed < -spec.maxSpeed * 0.4) localDriver.speed = -spec.maxSpeed * 0.4;
@@ -424,23 +525,20 @@
         if (keys.right) localDriver.angle += spec.turnSpeed * dir;
       }
 
-      // Move Forward
+      // Movement
       localDriver.x += Math.cos(localDriver.angle) * localDriver.speed;
       localDriver.y += Math.sin(localDriver.angle) * localDriver.speed;
 
-      // Checkpoint & Lap Detection (Oval circuit midpoint is x < 200)
-      if (localDriver.x < 200) {
-        localDriver.passedHalfway = true;
-      }
+      // Halfway Checkpoint (Left curve)
+      if (localDriver.x < 200) localDriver.passedHalfway = true;
 
-      // Finish line is at x = 440 crossing eastward along the bottom track (y > 380)
+      // Lap completion crossing finish line (bottom straightaway)
       if (localDriver.passedHalfway && localDriver.x >= 440 && localDriver.y > 380) {
         localDriver.passedHalfway = false;
         localDriver.lap += 1;
         hudLap.textContent = `${Math.min(localDriver.lap, 3)}/3`;
 
         if (localDriver.lap > 3) {
-          // Finished race
           update(ref(db, `race_lobbies/${roomCode}`), {
             status: "ended",
             winner: localDriver.name
@@ -448,11 +546,11 @@
         }
       }
 
-      // Bound to screen
+      // Boundaries
       localDriver.x = Math.max(30, Math.min(canvas.width - 30, localDriver.x));
       localDriver.y = Math.max(30, Math.min(canvas.height - 30, localDriver.y));
 
-      // Realtime Firebase throttle: sync every 45ms (~22 updates/sec)
+      // Network sync (every 45ms)
       const now = performance.now();
       if (now - lastNetworkSync > 45 && roomCode) {
         lastNetworkSync = now;
@@ -468,13 +566,13 @@
       hudSpeed.textContent = Math.round(Math.abs(localDriver.speed) * 28);
     }
 
-    // Canvas Rendering
+    // Render Canvas
     function draw() {
-      // 1. Infield Grass
+      // Infield Grass
       ctx.fillStyle = "#15803d";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // 2. Asphalt Track (Outer Oval)
+      // Track Outer Oval
       ctx.fillStyle = "#1e293b";
       ctx.beginPath();
       ctx.roundRect(50, 50, canvas.width - 100, canvas.height - 100, 140);
@@ -486,7 +584,7 @@
       ctx.roundRect(190, 160, canvas.width - 380, canvas.height - 320, 80);
       ctx.fill();
 
-      // Track Center Guide Line
+      // Center Line
       ctx.strokeStyle = "rgba(255, 255, 255, 0.25)";
       ctx.lineWidth = 2;
       ctx.setLineDash([12, 12]);
@@ -495,7 +593,7 @@
       ctx.stroke();
       ctx.setLineDash([]);
 
-      // 3. Checkered Finish Line (at bottom straightaway: x = 440)
+      // Checkered Finish Line (x = 440)
       for (let r = 0; r < 5; r++) {
         for (let c = 0; c < 2; c++) {
           ctx.fillStyle = (r + c) % 2 === 0 ? "#ffffff" : "#000000";
@@ -503,7 +601,7 @@
         }
       }
 
-      // 4. Render Opponent
+      // Draw Opponent
       if (opponentDriver) {
         drawVehicle(
           opponentDriver.x, 
@@ -515,7 +613,7 @@
         );
       }
 
-      // 5. Render Local Player
+      // Draw Local Player
       drawVehicle(
         localDriver.x, 
         localDriver.y, 
@@ -525,7 +623,7 @@
         playerRole === "p1" ? "#38bdf8" : "#ef4444"
       );
 
-      // 6. Winner Banner Overlay
+      // Winner Modal
       if (roomStatus === "ended") {
         ctx.fillStyle = "rgba(9, 13, 22, 0.85)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -537,7 +635,7 @@
 
         ctx.font = "16px system-ui";
         ctx.fillStyle = "#f8fafc";
-        ctx.fillText("Click 'Race Again' below to reset the match", canvas.width / 2, canvas.height / 2 + 30);
+        ctx.fillText("Click 'Race Again' below to reset", canvas.width / 2, canvas.height / 2 + 30);
       }
     }
 
@@ -547,38 +645,31 @@
       ctx.rotate(angle);
 
       if (type === "car") {
-        // Car Body
         ctx.fillStyle = color;
         ctx.beginPath();
         ctx.roundRect(-16, -9, 32, 18, 4);
         ctx.fill();
 
-        // Windshield
         ctx.fillStyle = "#090d16";
         ctx.fillRect(-2, -7, 10, 14);
 
-        // Headlights
         ctx.fillStyle = "#fef08a";
         ctx.fillRect(14, -8, 3, 4);
         ctx.fillRect(14, 4, 3, 4);
 
-        // Tires
         ctx.fillStyle = "#000";
         ctx.fillRect(-12, -12, 8, 3);
         ctx.fillRect(6, -12, 8, 3);
         ctx.fillRect(-12, 9, 8, 3);
         ctx.fillRect(6, 9, 8, 3);
       } else {
-        // Bike Body
         ctx.fillStyle = color;
         ctx.fillRect(-12, -3, 24, 6);
 
-        // Wheels
         ctx.fillStyle = "#000";
         ctx.fillRect(-14, -2, 6, 4);
         ctx.fillRect(8, -2, 6, 4);
 
-        // Driver Helmet
         ctx.fillStyle = "#ffffff";
         ctx.beginPath();
         ctx.arc(0, 0, 5, 0, Math.PI * 2);
@@ -587,7 +678,7 @@
 
       ctx.restore();
 
-      // Render Driver Label
+      // Label
       ctx.save();
       ctx.font = "bold 11px system-ui";
       ctx.textAlign = "center";
@@ -598,7 +689,6 @@
       ctx.restore();
     }
 
-    // Main Game Loop
     function loop() {
       updatePhysics();
       draw();
@@ -609,3 +699,4 @@
 </body>
 </html>
 
+        
