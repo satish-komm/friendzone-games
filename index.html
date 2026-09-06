@@ -1,3176 +1,611 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>FriendZone - Multiplayer Games</title>
-
-<style>
-
-/* =========================
-   GLOBAL
-========================= */
-
-*{
-  box-sizing:border-box;
-}
-
-html,body{
-  margin:0;
-  padding:0;
-  min-height:100%;
-}
-
-body{
-  font-family:
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
-
-  background:
-    radial-gradient(
-      circle at top,
-      #20275c 0%,
-      #0b1028 45%,
-      #050711 100%
-    );
-
-  color:white;
-}
-
-button,
-input{
-  font:inherit;
-}
-
-button{
-  cursor:pointer;
-}
-
-.hidden{
-  display:none !important;
-}
-
-
-/* =========================
-   HEADER
-========================= */
-
-.header{
-  padding:30px 18px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #252b72,
-      #111735 55%,
-      #080b1b
-    );
-
-  border-bottom:
-    1px solid rgba(255,255,255,.08);
-}
-
-.container{
-  width:100%;
-  max-width:950px;
-  margin:auto;
-}
-
-.logo{
-  font-size:36px;
-  font-weight:900;
-  letter-spacing:-1px;
-}
-
-.tagline{
-  margin-top:8px;
-  color:#bfc6ee;
-  font-size:17px;
-}
-
-
-/* =========================
-   CARDS
-========================= */
-
-.card{
-  margin:18px 0;
-  padding:20px;
-
-  background:
-    rgba(18,23,48,.88);
-
-  border:
-    1px solid rgba(130,140,220,.22);
-
-  border-radius:22px;
-
-  box-shadow:
-    0 20px 60px rgba(0,0,0,.25);
-}
-
-h2{
-  margin-top:0;
-}
-
-h3{
-  margin-bottom:10px;
-}
-
-
-/* =========================
-   INPUTS
-========================= */
-
-label{
-  display:block;
-  margin:8px 0;
-  color:#bfc7ef;
-  font-weight:700;
-}
-
-input{
-  width:100%;
-  padding:15px;
-
-  border-radius:14px;
-
-  border:
-    1px solid #3a426d;
-
-  background:#080c1d;
-
-  color:white;
-
-  outline:none;
-
-  font-size:16px;
-}
-
-input:focus{
-  border-color:#7770ff;
-}
-
-
-/* =========================
-   BUTTONS
-========================= */
-
-button{
-  border:none;
-  color:white;
-
-  padding:14px 17px;
-
-  border-radius:14px;
-
-  font-weight:800;
-
-  transition:
-    transform .12s,
-    opacity .12s;
-}
-
-button:active{
-  transform:scale(.96);
-}
-
-button:disabled{
-  opacity:.45;
-  cursor:not-allowed;
-}
-
-.primary{
-  background:
-    linear-gradient(
-      135deg,
-      #7168ff,
-      #554cf0
-    );
-}
-
-.secondary{
-  background:#29314f;
-}
-
-.green{
-  background:
-    linear-gradient(
-      135deg,
-      #18a873,
-      #087b55
-    );
-}
-
-.orange{
-  background:
-    linear-gradient(
-      135deg,
-      #e39336,
-      #bb6419
-    );
-}
-
-.red{
-  background:
-    linear-gradient(
-      135deg,
-      #df506d,
-      #a92747
-    );
-}
-
-.blue{
-  background:
-    linear-gradient(
-      135deg,
-      #318eea,
-      #2364c4
-    );
-}
-
-.full{
-  width:100%;
-}
-
-
-/* =========================
-   ROW
-========================= */
-
-.row{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-}
-
-.row button{
-  flex:1;
-  min-width:140px;
-}
-
-
-/* =========================
-   STATUS
-========================= */
-
-.status{
-  padding:13px 15px;
-
-  background:#171e39;
-
-  border-radius:14px;
-
-  margin:14px 0;
-
-  color:#c6cdef;
-}
-
-.status.good{
-  color:#74e2ae;
-}
-
-.status.error{
-  color:#ff879f;
-}
-
-
-/* =========================
-   JOIN BOX
-========================= */
-
-.join-box{
-  margin-top:15px;
-}
-
-
-/* =========================
-   ROOM CODE
-========================= */
-
-.room-code{
-  text-align:center;
-
-  font-size:38px;
-
-  font-weight:900;
-
-  letter-spacing:7px;
-
-  color:#aaa4ff;
-
-  padding:12px;
-}
-
-
-/* =========================
-   PLAYERS
-========================= */
-
-.players{
-  display:grid;
-  gap:9px;
-}
-
-.player{
-  padding:13px;
-
-  background:#1b2340;
-
-  border:
-    1px solid #303a60;
-
-  border-radius:14px;
-
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-}
-
-.player-name{
-  font-weight:800;
-}
-
-.player-ready{
-  color:#69dda4;
-  font-size:13px;
-}
-
-
-/* =========================
-   GAME SELECT
-========================= */
-
-.games{
-  display:grid;
-
-  grid-template-columns:
-    repeat(
-      auto-fit,
-      minmax(140px,1fr)
-    );
-
-  gap:11px;
-}
-
-.game-card{
-  background:#1a213d;
-
-  border:
-    1px solid #30395f;
-
-  padding:16px;
-
-  border-radius:16px;
-
-  color:white;
-
-  text-align:left;
-}
-
-.game-card.selected{
-  border-color:#827bff;
-
-  box-shadow:
-    0 0 0 2px
-    rgba(130,123,255,.22);
-
-  background:#242b55;
-}
-
-.game-icon{
-  font-size:29px;
-  margin-bottom:6px;
-}
-
-
-/* =========================
-   TTT
-========================= */
-
-.ttt-board{
-  display:grid;
-
-  grid-template-columns:
-    repeat(3,90px);
-
-  gap:9px;
-
-  justify-content:center;
-
-  margin:25px auto;
-}
-
-.ttt-cell{
-  width:90px;
-  height:90px;
-
-  font-size:36px;
-
-  background:#20294b;
-
-  border:
-    1px solid #39466f;
-}
-
-.ttt-cell:hover{
-  background:#2a345b;
-}
-
-
-/* =========================
-   FINISH
-========================= */
-
-.winner{
-  text-align:center;
-
-  padding:20px;
-
-  margin:15px 0;
-
-  background:
-    linear-gradient(
-      135deg,
-      #242b55,
-      #181e3a
-    );
-
-  border-radius:18px;
-
-  font-size:24px;
-
-  font-weight:900;
-}
-
-
-/* =========================
-   RACE
-========================= */
-
-.race-info{
-  text-align:center;
-
-  color:#bfc7ed;
-
-  margin-bottom:15px;
-}
-
-.track{
-  padding:13px;
-
-  margin:10px 0;
-
-  background:#0c1125;
-
-  border-radius:16px;
-
-  border:
-    1px solid #293459;
-}
-
-.track.me{
-  border:
-    2px solid #7168ff;
-}
-
-.track-header{
-  display:flex;
-
-  justify-content:space-between;
-
-  gap:10px;
-
-  margin-bottom:8px;
-}
-
-.track-name{
-  font-weight:800;
-}
-
-.track-percent{
-  color:#a9a4ff;
-  font-weight:900;
-}
-
-.progress{
-  width:100%;
-  height:25px;
-
-  background:#242d4d;
-
-  border-radius:30px;
-
-  overflow:hidden;
-}
-
-.progress-bar{
-  height:100%;
-
-  width:0%;
-
-  background:
-    linear-gradient(
-      90deg,
-      #675eff,
-      #a39eff
-    );
-
-  transition:
-    width .2s;
-}
-
-
-/* =========================
-   STATS
-========================= */
-
-.stats{
-  display:grid;
-
-  grid-template-columns:
-    repeat(3,1fr);
-
-  gap:9px;
-
-  margin:15px 0;
-}
-
-.stat{
-  padding:12px;
-
-  background:#1a213d;
-
-  border-radius:14px;
-
-  text-align:center;
-
-  color:#aeb7dc;
-}
-
-.stat strong{
-  display:block;
-
-  color:white;
-
-  font-size:22px;
-}
-
-
-/* =========================
-   ACTION BUTTON
-========================= */
-
-.action-button{
-  width:100%;
-
-  min-height:72px;
-
-  font-size:21px;
-
-  margin-top:8px;
-}
-
-.two-actions{
-  display:grid;
-
-  grid-template-columns:
-    1fr 1fr;
-
-  gap:10px;
-}
-
-
-/* =========================
-   INSTRUCTIONS
-========================= */
-
-.instructions{
-  padding:15px;
-
-  background:#11172e;
-
-  border-radius:15px;
-
-  color:#b9c2e6;
-
-  line-height:1.5;
-}
-
-
-/* =========================
-   FOOTER
-========================= */
-
-.footer{
-  text-align:center;
-
-  padding:25px;
-
-  color:#727b9f;
-
-  font-size:13px;
-}
-
-
-/* =========================
-   TOAST
-========================= */
-
-#toast{
-  position:fixed;
-
-  left:50%;
-
-  bottom:22px;
-
-  transform:
-    translateX(-50%);
-
-  background:#171d35;
-
-  color:white;
-
-  padding:13px 18px;
-
-  border-radius:13px;
-
-  display:none;
-
-  z-index:9999;
-
-  box-shadow:
-    0 10px 40px rgba(0,0,0,.4);
-}
-
-
-/* =========================
-   MOBILE
-========================= */
-
-@media(max-width:600px){
-
-  .logo{
-    font-size:31px;
-  }
-
-  .card{
-    border-radius:18px;
-    padding:16px;
-  }
-
-  .room-code{
-    font-size:31px;
-  }
-
-  .ttt-board{
-    grid-template-columns:
-      repeat(3,75px);
-  }
-
-  .ttt-cell{
-    width:75px;
-    height:75px;
-  }
-
-  .stats{
-    gap:6px;
-  }
-
-  .stat{
-    padding:9px 4px;
-    font-size:12px;
-  }
-
-  .stat strong{
-    font-size:19px;
-  }
-
-  .two-actions{
-    grid-template-columns:1fr;
-  }
-
-}
-
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apex Circuit - 2 Player Multiplayer Racer</title>
+  <style>
+    :root {
+      --bg: #090d16;
+      --panel: #131d2e;
+      --accent: #38bdf8;
+      --neon-green: #22c55e;
+      --neon-red: #ef4444;
+      --text: #f8fafc;
+      --muted: #64748b;
+    }
+    * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Lobby Panels */
+    .panel {
+      background: var(--panel);
+      border: 1px solid #1e293b;
+      border-radius: 14px;
+      padding: 2rem;
+      width: 90%;
+      max-width: 440px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+      text-align: center;
+    }
+    h1 { font-size: 1.8rem; margin-bottom: 0.25rem; color: var(--accent); letter-spacing: 1px; }
+    p.sub { color: var(--muted); font-size: 0.85rem; margin-bottom: 1.5rem; }
+
+    .tabs { display: flex; gap: 8px; margin-bottom: 1.25rem; }
+    .tab {
+      flex: 1;
+      padding: 0.65rem;
+      border-radius: 8px;
+      background: #0f172a;
+      border: 1px solid #334155;
+      color: var(--text);
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .tab.active { background: var(--accent); color: #090d16; border-color: var(--accent); }
+
+    input, select, button {
+      width: 100%;
+      padding: 0.75rem;
+      border-radius: 8px;
+      border: 1px solid #334155;
+      background: #0b1120;
+      color: var(--text);
+      font-size: 0.95rem;
+      margin-bottom: 0.85rem;
+    }
+    input:focus, select:focus { outline: none; border-color: var(--accent); }
+
+    button.btn-action {
+      background: var(--accent);
+      color: #090d16;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      padding: 0.85rem;
+      transition: opacity 0.2s;
+    }
+    button.btn-action:hover { opacity: 0.9; }
+
+    .code-box {
+      background: #090d16;
+      border: 2px dashed var(--accent);
+      border-radius: 8px;
+      padding: 1rem;
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: 6px;
+      color: var(--accent);
+      margin: 1rem 0;
+    }
+
+    /* Game View */
+    #game-container {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 900px;
+    }
+    .hud {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+    .hud span b { color: var(--text); }
+    canvas {
+      background: #14532d;
+      border: 3px solid #334155;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+    .controls-hint {
+      margin-top: 0.5rem;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+    .hidden { display: none !important; }
+  </style>
 </head>
-
-
 <body>
 
-
-<!-- =========================
-     HEADER
-========================= -->
-
-<header class="header">
-
-<div class="container">
-
-<div class="logo">
-🎮 FriendZone
-</div>
-
-<div class="tagline">
-Play mini-games with friends online
-</div>
-
-</div>
-
-</header>
-
-
-<main class="container">
-
-
-<!-- =========================
-     SETUP
-========================= -->
-
-<section
-id="setup"
-class="card">
-
-<h2>🚀 Start Playing</h2>
-
-<label>
-Your nickname
-</label>
-
-<input
-id="name"
-maxlength="18"
-placeholder="Enter your name"
-autocomplete="off"
->
-
-<div class="row">
-
-<button
-class="primary"
-onclick="createRoom()"
->
-➕ Create Room
-</button>
-
-<button
-class="secondary"
-onclick="showJoin()"
->
-🔗 Join Room
-</button>
-
-</div>
-
-
-<div
-id="joinBox"
-class="join-box hidden">
-
-<label>
-Room code
-</label>
-
-<input
-id="joinCode"
-maxlength="6"
-inputmode="numeric"
-placeholder="Enter 6-digit code"
->
-
-<button
-class="primary full"
-onclick="joinRoom()"
->
-Join Room
-</button>
-
-</div>
-
-
-<div
-id="connectionStatus"
-class="status"
->
-🔄 Connecting to multiplayer server...
-</div>
-
-</section>
-
-
-<!-- =========================
-     ROOM
-========================= -->
-
-<section
-id="room"
-class="card hidden">
-
-<div class="row">
-
-<h2 style="flex:1">
-🏠 Game Room
-</h2>
-
-<button
-class="red"
-onclick="leaveRoom()"
->
-Leave
-</button>
-
-</div>
-
-
-<div
-id="roomCode"
-class="room-code"
->
-------
-</div>
-
-
-<div class="row">
-
-<button
-class="secondary"
-onclick="copyCode()"
->
-📋 Copy Code
-</button>
-
-<button
-id="startButton"
-class="primary"
-onclick="startGame()"
->
-▶ Start Game
-</button>
-
-</div>
-
-
-<div
-id="roomStatus"
-class="status"
->
-Waiting for players...
-</div>
-
-
-<h3>
-👥 Players
-</h3>
-
-<div
-id="players"
-class="players"
->
-</div>
-
-
-<h3>
-🎮 Choose Game
-</h3>
-
-
-<div class="games">
-
-
-<button
-class="game-card selected"
-data-game="ttt"
-onclick="selectGame('ttt')"
->
-
-<div class="game-icon">
-❌⭕
-</div>
-
-<b>Tic-Tac-Toe</b>
-
-<div class="small">
-Classic 2-player game
-</div>
-
-</button>
-
-
-<button
-class="game-card"
-data-game="car"
-onclick="selectGame('car')"
->
-
-<div class="game-icon">
-🏎️
-</div>
-
-<b>Car Rush</b>
-
-<div class="small">
-Race to the finish
-</div>
-
-</button>
-
-
-<button
-class="game-card"
-data-game="bike"
-onclick="selectGame('bike')"
->
-
-<div class="game-icon">
-🏍️
-</div>
-
-<b>Bike Dash</b>
-
-<div class="small">
-Pedal and dodge
-</div>
-
-</button>
-
-
-<button
-class="game-card"
-data-game="run"
-onclick="selectGame('run')"
->
-
-<div class="game-icon">
-🏃
-</div>
-
-<b>Run Rush</b>
-
-<div class="small">
-Tap to run
-</div>
-
-</button>
-
-
-</div>
-
-</section>
-
-
-<!-- =========================
-     GAME
-========================= -->
-
-<section
-id="game"
-class="card hidden">
-
-<div class="row">
-
-<h2
-id="gameTitle"
-style="flex:1"
->
-Game
-</h2>
-
-<button
-class="secondary"
-onclick="backToRoom()"
->
-🏠 Room
-</button>
-
-</div>
-
-
-<div
-id="gameStatus"
-class="status"
->
-Loading...
-</div>
-
-
-<div id="ttt"></div>
-
-<div id="arcade"></div>
-
-</section>
-
-
-<!-- =========================
-     HOW IT WORKS
-========================= -->
-
-<section class="card">
-
-<h2>
-📱 How it works
-</h2>
-
-<p>
-1️⃣ Create a room.
-</p>
-
-<p>
-2️⃣ Share the 6-digit room code.
-</p>
-
-<p>
-3️⃣ Friends join your room.
-</p>
-
-<p>
-4️⃣ Host chooses a game.
-</p>
-
-<p>
-5️⃣ Press Start Game.
-</p>
-
-<p>
-6️⃣ Everyone plays together in realtime.
-</p>
-
-</section>
-
-
-</main>
-
-
-<div id="toast"></div>
-
-
-<footer class="footer">
-
-FriendZone Multiplayer 🎮
-
-</footer>
-
-
-
-<script type="module">
-
-
-/* =====================================================
-   FIREBASE IMPORTS
-===================================================== */
-
-import {
-  initializeApp
-}
-from
-"https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
-
-
-import {
-  getDatabase,
-  ref,
-  set,
-  get,
-  update,
-  onValue,
-  remove,
-  runTransaction
-}
-from
-"https://www.gstatic.com/firebasejs/12.18.0/firebase-database.js";
-
-
-import {
-  getAuth,
-  signInAnonymously
-}
-from
-"https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
-
-
-
-/* =====================================================
-   YOUR FIREBASE CONFIG
-===================================================== */
-
-const firebaseConfig = {
-
-  apiKey:
-  "AIzaSyBzLchy5M2fLne4c7Ghw1KNN8wVrlZdd8M",
-
-  authDomain:
-  "friendsgame-872f5.firebaseapp.com",
-
-  databaseURL:
-  "https://friendsgame-872f5-default-rtdb.firebaseio.com",
-
-  projectId:
-  "friendsgame-872f5",
-
-  storageBucket:
-  "friendsgame-872f5.firebasestorage.app",
-
-  messagingSenderId:
-  "522534013233",
-
-  appId:
-  "1:522534013233:web:f5faa6e6795023d0420810",
-
-  measurementId:
-  "G-PW5H3G97QR"
-
-};
-
-
-
-/* =====================================================
-   GLOBAL VARIABLES
-===================================================== */
-
-let app = null;
-
-let db = null;
-
-let auth = null;
-
-let uid = null;
-
-let roomId = null;
-
-let isHost = false;
-
-let selectedGame = "ttt";
-
-let roomListener = null;
-
-
-
-/* =====================================================
-   HELPER
-===================================================== */
-
-function $(id){
-
-  return document.getElementById(id);
-
-}
-
-
-function escapeHTML(value){
-
-  return String(value)
-  .replace(/&/g,"&amp;")
-  .replace(/</g,"&lt;")
-  .replace(/>/g,"&gt;")
-  .replace(/"/g,"&quot;")
-  .replace(/'/g,"&#039;");
-
-}
-
-
-function showToast(message){
-
-  const toast = $("toast");
-
-  toast.textContent = message;
-
-  toast.style.display = "block";
-
-  clearTimeout(window.toastTimeout);
-
-  window.toastTimeout =
-  setTimeout(()=>{
-
-    toast.style.display = "none";
-
-  },2500);
-
-}
-
-
-function getName(){
-
-  let name =
-  $("name").value.trim();
-
-  if(!name){
-
-    name = "Player";
-
-  }
-
-  return name.slice(0,18);
-
-}
-
-
-
-/* =====================================================
-   FIREBASE BOOT
-===================================================== */
-
-async function boot(){
-
-  try{
-
-    app =
-    initializeApp(firebaseConfig);
-
-    db =
-    getDatabase(app);
-
-    auth =
-    getAuth(app);
-
-    await signInAnonymously(auth);
-
-    uid =
-    auth.currentUser.uid;
-
-    $("connectionStatus").innerHTML =
-    "🟢 Connected to multiplayer server";
-
-    $("connectionStatus")
-    .classList.add("good");
-
-  }
-
-  catch(error){
-
-    console.error(error);
-
-    $("connectionStatus").innerHTML =
-    "🔴 Firebase connection failed";
-
-    $("connectionStatus")
-    .classList.add("error");
-
-    showToast(
-      "Firebase connection failed"
-    );
-
-  }
-
-}
-
-
-boot();
-
-
-
-/* =====================================================
-   ROOM CODE
-===================================================== */
-
-function generateRoomCode(){
-
-  return String(
-    Math.floor(
-      100000 +
-      Math.random()*900000
-    )
-  );
-
-}
-
-
-async function createUniqueRoomCode(){
-
-  for(
-    let i=0;
-    i<10;
-    i++
-  ){
-
-    const code =
-    generateRoomCode();
-
-    const snapshot =
-    await get(
-      ref(db,"rooms/"+code)
-    );
-
-    if(!snapshot.exists()){
-
+  <!-- MATCHMAKING LOBBY -->
+  <div class="panel" id="lobby-panel">
+    <h1>APEX CIRCUIT</h1>
+    <p class="sub">Real-Time Multiplayer Driving & Racing</p>
+
+    <div class="tabs">
+      <button class="tab active" id="tab-create">Create Match</button>
+      <button class="tab" id="tab-join">Join Match</button>
+    </div>
+
+    <!-- Create Room Tab -->
+    <div id="section-create">
+      <input type="text" id="create-name" placeholder="Driver Name" maxlength="12" value="Player 1" />
+      <select id="create-vehicle">
+        <option value="car">🏎️ Sports Car (High Top Speed)</option>
+        <option value="bike">🏍️ Racing Bike (Fast Turn & Launch)</option>
+      </select>
+      <button class="btn-action" id="btn-create">Generate Room Code</button>
+    </div>
+
+    <!-- Join Room Tab -->
+    <div id="section-join" class="hidden">
+      <input type="text" id="join-name" placeholder="Driver Name" maxlength="12" value="Player 2" />
+      <select id="join-vehicle">
+        <option value="car">🏎️ Sports Car (High Top Speed)</option>
+        <option value="bike">🏍️ Racing Bike (Fast Turn & Launch)</option>
+      </select>
+      <input type="text" id="join-code" placeholder="Enter 4-Letter Code" maxlength="4" style="text-transform: uppercase;" />
+      <button class="btn-action" id="btn-join">Enter Race</button>
+    </div>
+
+    <!-- Waiting Screen -->
+    <div id="section-waiting" class="hidden">
+      <p style="font-size: 0.85rem; color: var(--muted);">Share this room code with your friend:</p>
+      <div class="code-box" id="show-room-code">----</div>
+      <p style="font-size: 0.8rem; color: var(--accent);">Waiting for opponent to connect...</p>
+    </div>
+  </div>
+
+  <!-- GAME ARENA -->
+  <div id="game-container">
+    <div class="hud">
+      <span>Driver: <b id="hud-name">-</b></span>
+      <span>Vehicle: <b id="hud-vehicle">-</b></span>
+      <span>Speed: <b id="hud-speed">0</b> km/h</span>
+      <span>Lap: <b id="hud-lap">1/3</b></span>
+    </div>
+    <canvas id="raceTrack" width="880" height="520"></canvas>
+    <div class="controls-hint">Drive: [W / ↑] Gas | [S / ↓] Brake & Reverse | [A / ←] Steer Left | [D / →] Steer Right</div>
+    <button id="btn-rematch" class="btn-action hidden" style="margin-top: 10px; max-width: 200px;">Race Again</button>
+  </div>
+
+  <!-- Firebase Modular Scripts -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { 
+      getDatabase, ref, set, get, update, onValue, onDisconnect 
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    // Your Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyBzLchy5M2fLne4c7Ghw1KNN8wVrlZdd8M",
+      authDomain: "friendsgame-872f5.firebaseapp.com",
+      databaseURL: "https://friendsgame-872f5-default-rtdb.firebaseio.com",
+      projectId: "friendsgame-872f5",
+      storageBucket: "friendsgame-872f5.firebasestorage.app",
+      messagingSenderId: "522534013233",
+      appId: "1:522534013233:web:f5faa6e6795023d0420810",
+      measurementId: "G-PW5H3G97QR"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+
+    let myUid = null;
+    let roomCode = null;
+    let playerRole = null; // "p1" or "p2"
+
+    // Sign in player anonymously
+    signInAnonymously(auth).then(cred => {
+      myUid = cred.user.uid;
+    });
+
+    // UI Wire-up
+    const tabCreate = document.getElementById("tab-create");
+    const tabJoin = document.getElementById("tab-join");
+    const secCreate = document.getElementById("section-create");
+    const secJoin = document.getElementById("section-join");
+    const secWaiting = document.getElementById("section-waiting");
+    const showCode = document.getElementById("show-room-code");
+    const lobbyPanel = document.getElementById("lobby-panel");
+    const gameContainer = document.getElementById("game-container");
+    const hudName = document.getElementById("hud-name");
+    const hudVehicle = document.getElementById("hud-vehicle");
+    const hudSpeed = document.getElementById("hud-speed");
+    const hudLap = document.getElementById("hud-lap");
+    const btnRematch = document.getElementById("btn-rematch");
+    const canvas = document.getElementById("raceTrack");
+    const ctx = canvas.getContext("2d");
+
+    tabCreate.onclick = () => {
+      tabCreate.classList.add("active");
+      tabJoin.classList.remove("active");
+      secCreate.classList.remove("hidden");
+      secJoin.classList.add("hidden");
+      secWaiting.classList.add("hidden");
+    };
+    tabJoin.onclick = () => {
+      tabJoin.classList.add("active");
+      tabCreate.classList.remove("active");
+      secJoin.classList.remove("hidden");
+      secCreate.classList.add("hidden");
+      secWaiting.classList.add("hidden");
+    };
+
+    function randomCode() {
+      const set = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+      let code = "";
+      for (let i = 0; i < 4; i++) code += set[Math.floor(Math.random() * set.length)];
       return code;
-
     }
 
-  }
-
-  throw new Error(
-    "Unable to generate room"
-  );
-
-}
-
-
-
-/* =====================================================
-   CREATE ROOM
-===================================================== */
-
-async function createRoom(){
-
-  if(!uid){
-
-    showToast(
-      "Please wait for Firebase to connect"
-    );
-
-    return;
-
-  }
-
-
-  try{
-
-    const code =
-    await createUniqueRoomCode();
-
-    roomId = code;
-
-    isHost = true;
-
-    const playerName =
-    getName();
-
-
-    await set(
-      ref(
-        db,
-        "rooms/"+code
-      ),
-      {
-
-        host:uid,
-
-        game:"ttt",
-
-        started:false,
-
-        winner:null,
-
-        createdAt:Date.now(),
-
-        players:{
-
-          [uid]:{
-
-            name:playerName,
-
-            ready:false
-
-          }
-
-        }
-
-      }
-    );
-
-
-    openRoom();
-
-    listenToRoom();
-
-    showToast(
-      "Room created!"
-    );
-
-  }
-
-  catch(error){
-
-    console.error(error);
-
-    showToast(
-      "Could not create room"
-    );
-
-  }
-
-}
-
-
-
-/* =====================================================
-   SHOW JOIN
-===================================================== */
-
-function showJoin(){
-
-  $("joinBox")
-  .classList
-  .toggle("hidden");
-
-  $("joinCode").focus();
-
-}
-
-
-
-/* =====================================================
-   JOIN ROOM
-===================================================== */
-
-async function joinRoom(){
-
-  if(!uid){
-
-    showToast(
-      "Please wait for Firebase to connect"
-    );
-
-    return;
-
-  }
-
-
-  const code =
-  $("joinCode")
-  .value
-  .trim();
-
-
-  if(!/^\d{6}$/.test(code)){
-
-    showToast(
-      "Enter a valid 6-digit room code"
-    );
-
-    return;
-
-  }
-
-
-  try{
-
-    const snapshot =
-    await get(
-      ref(
-        db,
-        "rooms/"+code
-      )
-    );
-
-
-    if(!snapshot.exists()){
-
-      showToast(
-        "Room does not exist"
-      );
-
-      return;
-
-    }
-
-
-    const data =
-    snapshot.val();
-
-
-    const players =
-    data.players || {};
-
-
-    if(
-      Object.keys(players).length>=4
-    ){
-
-      showToast(
-        "Room is full"
-      );
-
-      return;
-
-    }
-
-
-    roomId = code;
-
-    isHost = false;
-
-
-    await update(
-      ref(
-        db,
-        "rooms/"+code+
-        "/players/"+uid
-      ),
-      {
-
-        name:getName(),
-
-        ready:false
-
-      }
-    );
-
-
-    openRoom();
-
-    listenToRoom();
-
-    showToast(
-      "Joined room!"
-    );
-
-  }
-
-  catch(error){
-
-    console.error(error);
-
-    showToast(
-      "Could not join room"
-    );
-
-  }
-
-}
-
-
-
-/* =====================================================
-   OPEN ROOM
-===================================================== */
-
-function openRoom(){
-
-  $("setup")
-  .classList
-  .add("hidden");
-
-  $("room")
-  .classList
-  .remove("hidden");
-
-  $("game")
-  .classList
-  .add("hidden");
-
-  $("roomCode")
-  .textContent =
-  roomId;
-
-}
-
-
-
-/* =====================================================
-   LISTEN TO ROOM
-===================================================== */
-
-function listenToRoom(){
-
-  if(roomListener){
-
-    roomListener();
-
-  }
-
-
-  roomListener =
-  onValue(
-    ref(
-      db,
-      "rooms/"+roomId
-    ),
-
-    snapshot=>{
-
-      if(!snapshot.exists()){
-
-        showToast(
-          "Room was closed"
-        );
-
-        setTimeout(
-          ()=>location.reload(),
-          1000
-        );
-
-        return;
-
-      }
-
-
-      const data =
-      snapshot.val();
-
-
-      selectedGame =
-      data.game || "ttt";
-
-
-      renderPlayers(
-        data
-      );
-
-
-      highlightGame();
-
-
-      if(data.started){
-
-        showGame(data);
-
-      }
-
-      else{
-
-        $("game")
-        .classList
-        .add("hidden");
-
-        $("room")
-        .classList
-        .remove("hidden");
-
-      }
-
-
-      $("startButton")
-      .style
-      .display =
-      isHost
-      ? "block"
-      : "none";
-
-    }
-
-  );
-
-}
-
-
-
-/* =====================================================
-   RENDER PLAYERS
-===================================================== */
-
-function renderPlayers(data){
-
-  const players =
-  data.players || {};
-
-
-  const ids =
-  Object.keys(players);
-
-
-  $("players").innerHTML =
-  ids.map(id=>{
-
-    const p =
-    players[id] || {};
-
-
-    return `
-
-      <div class="player">
-
-        <div>
-
-          <span class="player-name">
-
-            ${
-              id===data.host
-              ? "👑 "
-              : ""
-            }
-
-            ${escapeHTML(
-              p.name || "Player"
-            )}
-
-            ${
-              id===uid
-              ? " (You)"
-              : ""
-            }
-
-          </span>
-
-        </div>
-
-        <div class="player-ready">
-
-          ${
-            p.ready
-            ? "✓ Ready"
-            : ""
-          }
-
-        </div>
-
-      </div>
-
-    `;
-
-  }).join("");
-
-
-  $("roomStatus")
-  .textContent =
-  ids.length < 2
-  ? "👥 Waiting for another player..."
-  : ids.length+" players connected.";
-
-}
-
-
-
-/* =====================================================
-   SELECT GAME
-===================================================== */
-
-async function selectGame(game){
-
-  if(!isHost){
-
-    showToast(
-      "Only the host can choose the game"
-    );
-
-    return;
-
-  }
-
-
-  selectedGame = game;
-
-
-  await update(
-    ref(
-      db,
-      "rooms/"+roomId
-    ),
-    {
-
-      game:game
-
-    }
-  );
-
-
-  highlightGame();
-
-}
-
-
-
-/* =====================================================
-   HIGHLIGHT GAME
-===================================================== */
-
-function highlightGame(){
-
-  document
-  .querySelectorAll(".game-card")
-  .forEach(button=>{
-
-    button.classList.toggle(
-      "selected",
-      button.dataset.game === selectedGame
-    );
-
-  });
-
-}
-
-
-
-/* =====================================================
-   START GAME
-===================================================== */
-
-async function startGame(){
-
-  if(!isHost){
-    showToast("Only the host can start");
-    return;
-  }
-
-  const snapshot = await get(
-    ref(db,"rooms/"+roomId+"/players")
-  );
-
-  const players = snapshot.val() || {};
-  const ids = Object.keys(players);
-
-  if(ids.length < 2){
-    showToast("Need at least 2 players");
-    return;
-  }
-
-  /* TIC TAC TOE */
-
-  if(selectedGame === "ttt"){
-
-    await update(
-      ref(db,"rooms/"+roomId),
-      {
-        started:true,
-        game:"ttt",
-
-        board:[
-          "","","",
-          "","","",
-          "","",""
-        ],
-
-        turn:ids[0],
-        winner:null,
-        winnerName:null
-      }
-    );
-
-    return;
-  }
-
-
-  /* RACE GAMES */
-
-  const racePlayers = {};
-
-  ids.forEach(id=>{
-
-    racePlayers[id] = {
-      progress:0,
-      score:0,
-      boost:0,
-      energy:0,
-      dodged:0
+    // Vehicle Specifications
+    const SPECS = {
+      car: { accel: 0.12, maxSpeed: 4.8, turnSpeed: 0.045, friction: 0.98, length: 32, width: 16, color: "#38bdf8" },
+      bike: { accel: 0.16, maxSpeed: 4.4, turnSpeed: 0.065, friction: 0.97, length: 26, width: 10, color: "#ef4444" }
     };
 
-  });
-
-
-  await update(
-    ref(db,"rooms/"+roomId),
-    {
-      started:true,
-      game:selectedGame,
-
-      winner:null,
-      winnerName:null,
-
-      race:{
-        winner:null,
-        winnerName:null,
-        players:racePlayers
-      }
-    }
-  );
-
-}
-
-
-
-/* =====================================================
-   SHOW GAME
-===================================================== */
-
-function showGame(data){
-
-  $("room").classList.add("hidden");
-  $("game").classList.remove("hidden");
-
-  const titles = {
-    ttt:"❌⭕ Tic-Tac-Toe",
-    car:"🏎️ Car Rush",
-    bike:"🏍️ Bike Dash",
-    run:"🏃 Run Rush"
-  };
-
-  $("gameTitle").textContent =
-    titles[data.game] || "Game";
-
-
-  if(data.game === "ttt"){
-    renderTTT(data);
-  }
-  else{
-    renderArcade(data);
-  }
-
-}
-
-
-
-/* =====================================================
-   TIC TAC TOE
-===================================================== */
-
-function renderTTT(data){
-
-  $("arcade").innerHTML = "";
-
-  const players = data.players || {};
-  const ids = Object.keys(players);
-
-  const myIndex = ids.indexOf(uid);
-
-  const symbol =
-    myIndex === 0 ? "X" : "O";
-
-
-  if(data.winner){
-
-    $("gameStatus").textContent =
-      data.winner === "Draw"
-      ? "🤝 It's a draw!"
-      : "🏆 "+data.winner+" wins!";
-
-  }
-  else if(data.turn === uid){
-
-    $("gameStatus").textContent =
-      "🟢 Your turn — "+symbol;
-
-  }
-  else{
-
-    $("gameStatus").textContent =
-      "⏳ Waiting for the other player...";
-
-  }
-
-
-  const board =
-    data.board ||
-    [
-      "","","",
-      "","","",
-      "","",""
-    ];
-
-
-  $("ttt").innerHTML = `
-
-    <div class="instructions">
-
-      You are <b>${symbol}</b>.
-
-      First player is X,
-      second player is O.
-
-    </div>
-
-    <div class="ttt-board">
-
-      ${board.map((cell,index)=>`
-
-        <button
-          class="ttt-cell"
-          onclick="window.playCell(${index})"
-          ${cell ? "disabled" : ""}
-        >
-
-          ${cell}
-
-        </button>
-
-      `).join("")}
-
-    </div>
-
-    ${
-      data.winner
-      ? `
-
-        <div class="winner">
-
-          ${
-            data.winner === "Draw"
-            ? "🤝 Draw!"
-            : "🏆 "+escapeHTML(data.winner)+" wins!"
-          }
-
-        </div>
-
-      `
-      : ""
-    }
-
-  `;
-
-}
-
-
-
-/* =====================================================
-   TIC TAC TOE MOVE
-===================================================== */
-
-window.playCell = async function(index){
-
-  try{
-
-    const snapshot =
-      await get(
-        ref(db,"rooms/"+roomId)
-      );
-
-    if(!snapshot.exists()) return;
-
-    const data = snapshot.val();
-
-    if(data.game !== "ttt") return;
-
-    if(data.winner) return;
-
-    if(data.turn !== uid){
-
-      showToast("Not your turn");
-
-      return;
-    }
-
-
-    const players =
-      data.players || {};
-
-    const ids =
-      Object.keys(players);
-
-    const myIndex =
-      ids.indexOf(uid);
-
-    if(myIndex < 0) return;
-
-
-    const symbol =
-      myIndex === 0 ? "X" : "O";
-
-
-    const board = [
-      ...(data.board ||
-      [
-        "","","",
-        "","","",
-        "","",""
-      ])
-    ];
-
-
-    if(board[index]) return;
-
-
-    board[index] = symbol;
-
-
-    const result =
-      checkWinner(board);
-
-
+    // Local physics simulation state
+    const localDriver = {
+      x: 440,
+      y: 440,
+      angle: 0,
+      speed: 0,
+      lap: 1,
+      passedHalfway: false,
+      type: "car",
+      name: "Player"
+    };
+
+    let opponentDriver = null;
+    let roomStatus = "waiting";
     let winner = null;
-    let nextTurn = null;
 
-
-    if(result === "Draw"){
-
-      winner = "Draw";
-
-    }
-    else if(result){
-
-      const winnerId =
-        result === "X"
-        ? ids[0]
-        : ids[1];
-
-      winner =
-        getPlayerName(
-          data,
-          winnerId
-        );
-
-    }
-    else{
-
-      nextTurn =
-        ids.find(
-          id => id !== uid
-        );
-
-    }
-
-
-    await update(
-      ref(db,"rooms/"+roomId),
-      {
-        board:board,
-        turn:nextTurn,
-        winner:winner
-      }
-    );
-
-  }
-  catch(error){
-
-    console.error(error);
-
-    showToast("Game error");
-
-  }
-
-};
-
-
-
-/* =====================================================
-   CHECK WINNER
-===================================================== */
-
-function checkWinner(board){
-
-  const lines = [
-
-    [0,1,2],
-    [3,4,5],
-    [6,7,8],
-
-    [0,3,6],
-    [1,4,7],
-    [2,5,8],
-
-    [0,4,8],
-    [2,4,6]
-
-  ];
-
-
-  for(const line of lines){
-
-    const a = line[0];
-    const b = line[1];
-    const c = line[2];
-
-
-    if(
-      board[a] &&
-      board[a] === board[b] &&
-      board[b] === board[c]
-    ){
-
-      return board[a];
-
-    }
-
-  }
-
-
-  if(
-    board.every(cell => cell)
-  ){
-
-    return "Draw";
-
-  }
-
-
-  return null;
-
-}
-
-
-
-/* =====================================================
-   GET PLAYER NAME
-===================================================== */
-
-function getPlayerName(data,id){
-
-  if(id === "Draw"){
-    return "Draw";
-  }
-
-
-  const player =
-    data.players &&
-    data.players[id];
-
-
-  return player &&
-         player.name
-         ? player.name
-         : "Player";
-
-}
-
-
-
-/* =====================================================
-   ARCADE GAMES
-===================================================== */
-
-function renderArcade(data){
-
-  $("ttt").innerHTML = "";
-
-
-  const race =
-    data.race || {};
-
-  const racePlayers =
-    race.players || {};
-
-  const ids =
-    Object.keys(racePlayers);
-
-
-  let instructions = "";
-
-
-  if(data.game === "car"){
-
-    instructions = `
-
-      🏎️ <b>Car Rush</b><br>
-
-      Press ACCELERATE to move forward.
-      Collect 3 boost points and use BOOST
-      for a bigger speed increase.
-
-    `;
-
-  }
-  else if(data.game === "bike"){
-
-    instructions = `
-
-      🏍️ <b>Bike Dash</b><br>
-
-      Press PEDAL to move forward.
-      When an obstacle appears,
-      press DODGE for extra progress.
-
-    `;
-
-  }
-  else{
-
-    instructions = `
-
-      🏃 <b>Run Rush</b><br>
-
-      Tap RUN repeatedly.
-      You can also press SPACE on a keyboard.
-
-    `;
-
-  }
-
-
-  let html = `
-
-    <div class="instructions">
-
-      ${instructions}
-
-    </div>
-
-    <div class="race-info">
-
-      🏁 First player to reach 100% wins!
-
-    </div>
-
-  `;
-
-
-  ids.forEach(id=>{
-
-    const player =
-      racePlayers[id] || {};
-
-    const progress =
-      Math.min(
-        100,
-        Number(player.progress || 0)
-      );
-
-
-    const playerName =
-      getPlayerName(data,id);
-
-
-    html += `
-
-      <div class="track ${id===uid ? "me" : ""}">
-
-        <div class="track-header">
-
-          <div class="track-name">
-
-            ${
-              id === data.host
-              ? "👑 "
-              : ""
-            }
-
-            ${escapeHTML(playerName)}
-
-            ${
-              id === uid
-              ? " (You)"
-              : ""
-            }
-
-          </div>
-
-          <div class="track-percent">
-
-            ${progress}%
-
-          </div>
-
-        </div>
-
-
-        <div class="progress">
-
-          <div
-            class="progress-bar"
-            style="width:${progress}%"
-          ></div>
-
-        </div>
-
-      </div>
-
-    `;
-
-  });
-
-
-  const me =
-    racePlayers[uid] || {
-
-      progress:0,
-      score:0,
-      boost:0,
-      energy:0,
-      dodged:0
-
+    // Keys State
+    const keys = { forward: false, backward: false, left: false, right: false };
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "w" || e.key === "W" || e.key === "ArrowUp") keys.forward = true;
+      if (e.key === "s" || e.key === "S" || e.key === "ArrowDown") keys.backward = true;
+      if (e.key === "a" || e.key === "A" || e.key === "ArrowLeft") keys.left = true;
+      if (e.key === "d" || e.key === "D" || e.key === "ArrowRight") keys.right = true;
+    });
+    window.addEventListener("keyup", (e) => {
+      if (e.key === "w" || e.key === "W" || e.key === "ArrowUp") keys.forward = false;
+      if (e.key === "s" || e.key === "S" || e.key === "ArrowDown") keys.backward = false;
+      if (e.key === "a" || e.key === "A" || e.key === "ArrowLeft") keys.left = false;
+      if (e.key === "d" || e.key === "D" || e.key === "ArrowRight") keys.right = false;
+    });
+
+    // Create Match
+    document.getElementById("btn-create").onclick = async () => {
+      if (!myUid) return alert("Establishing server connection...");
+      const name = document.getElementById("create-name").value.trim() || "Host";
+      const vehicle = document.getElementById("create-vehicle").value;
+      roomCode = randomCode();
+      playerRole = "p1";
+
+      localDriver.type = vehicle;
+      localDriver.name = name;
+      localDriver.x = 440;
+      localDriver.y = 425; // Top row of grid
+      localDriver.angle = 0;
+
+      const roomRef = ref(db, `race_lobbies/${roomCode}`);
+      await set(roomRef, {
+        status: "waiting",
+        winner: null,
+        p1: { name, type: vehicle, x: localDriver.x, y: localDriver.y, angle: 0, speed: 0, lap: 1 }
+      });
+
+      secCreate.classList.add("hidden");
+      secWaiting.classList.remove("hidden");
+      showCode.textContent = roomCode;
+
+      listenToRoom(roomCode);
     };
 
-
-  const progress =
-    Number(me.progress || 0);
-
-
-  html += `
-
-    <div class="stats">
-
-      <div class="stat">
-
-        <strong>
-          ${progress}%
-        </strong>
-
-        Progress
-
-      </div>
-
-
-      <div class="stat">
-
-        <strong>
-
-          ${
-            data.game === "car"
-            ? me.boost || 0
-
-            : data.game === "bike"
-            ? me.dodged || 0
-
-            : me.energy || 0
-          }
-
-        </strong>
-
-        ${
-          data.game === "car"
-          ? "Boost"
-
-          : data.game === "bike"
-          ? "Dodges"
-
-          : "Energy"
-        }
-
-      </div>
-
-
-      <div class="stat">
-
-        <strong>
-          ${me.score || 0}
-        </strong>
-
-        Score
-
-      </div>
-
-    </div>
-
-  `;
-
-
-  if(race.winner){
-
-    html += `
-
-      <div class="winner">
-
-        🏆
-        ${escapeHTML(
-          race.winnerName || "Player"
-        )}
-        wins!
-
-      </div>
-
-    `;
-
-  }
-
-  else if(progress >= 100){
-
-    html += `
-
-      <div class="winner">
-
-        🏁 You finished!
-
-      </div>
-
-    `;
-
-  }
-
-  else{
-
-
-    if(data.game === "car"){
-
-      html += `
-
-        <div class="two-actions">
-
-          <button
-            class="primary action-button"
-            onclick="window.raceAction('car')"
-          >
-
-            🏎️ ACCELERATE
-
-          </button>
-
-
-          <button
-            class="orange action-button"
-            onclick="window.useBoost()"
-          >
-
-            ⚡ BOOST
-
-          </button>
-
-        </div>
-
-
-        <div class="instructions">
-
-          Need <b>3 boost</b>
-          points to use BOOST.
-
-        </div>
-
-      `;
-
-    }
-
-
-    else if(data.game === "bike"){
-
-      const obstacleActive =
-        progress > 0 &&
-        progress % 20 >= 12 &&
-        progress % 20 <= 18;
-
-
-      if(obstacleActive){
-
-        html += `
-
-          <button
-            class="orange action-button"
-            onclick="window.dodgeBike()"
-          >
-
-            🚧 DODGE OBSTACLE!
-
-          </button>
-
-        `;
-
-      }
-      else{
-
-        html += `
-
-          <button
-            class="primary action-button"
-            onclick="window.raceAction('bike')"
-          >
-
-            🏍️ PEDAL
-
-          </button>
-
-        `;
-
-      }
-
-    }
-
-
-    else{
-
-      html += `
-
-        <button
-          class="green action-button"
-          onclick="window.raceAction('run')"
-        >
-
-          🏃 RUN!
-
-        </button>
-
-
-        <div class="instructions">
-
-          💡 Keyboard:
-          press <b>SPACE</b> to run.
-
-        </div>
-
-      `;
-
-    }
-
-  }
-
-
-  $("arcade").innerHTML = html;
-
-
-  $("gameStatus").textContent =
-    race.winner
-    ? "🏆 Race complete!"
-    : "🏁 Keep going! First to 100% wins.";
-
-}
-
-
-
-/* =====================================================
-   RACE ACTION
-===================================================== */
-
-window.raceAction =
-async function(game){
-
-  try{
-
-    const snapshot =
-      await get(
-        ref(db,"rooms/"+roomId)
-      );
-
-
-    if(!snapshot.exists()) return;
-
-
-    const data =
-      snapshot.val();
-
-
-    if(data.game !== game) return;
-
-
-    if(data.race?.winner) return;
-
-
-    const player =
-      data.race?.players?.[uid];
-
-
-    if(!player) return;
-
-
-    let progress =
-      Number(
-        player.progress || 0
-      );
-
-
-    let amount = 5;
-
-
-    if(game === "run"){
-
-      amount = 4;
-
-    }
-
-
-    progress =
-      Math.min(
-        100,
-        progress + amount
-      );
-
-
-    const changes = {
-
-      progress:progress,
-
-      score:
-        Number(player.score || 0) + 1
-
+    // Join Match
+    document.getElementById("btn-join").onclick = async () => {
+      if (!myUid) return alert("Establishing server connection...");
+      const code = document.getElementById("join-code").value.trim().toUpperCase();
+      const name = document.getElementById("join-name").value.trim() || "Challenger";
+      const vehicle = document.getElementById("join-vehicle").value;
+
+      if (code.length !== 4) return alert("Please enter the 4-letter code");
+
+      const roomRef = ref(db, `race_lobbies/${code}`);
+      const snap = await get(roomRef);
+
+      if (!snap.exists()) return alert("Room does not exist.");
+      const data = snap.val();
+      if (data.p2) return alert("Match already full.");
+
+      roomCode = code;
+      playerRole = "p2";
+
+      localDriver.type = vehicle;
+      localDriver.name = name;
+      localDriver.x = 440;
+      localDriver.y = 455; // Bottom row of grid
+      localDriver.angle = 0;
+
+      await update(roomRef, {
+        status: "racing",
+        p2: { name, type: vehicle, x: localDriver.x, y: localDriver.y, angle: 0, speed: 0, lap: 1 }
+      });
+
+      listenToRoom(roomCode);
     };
 
-
-    if(game === "car"){
-
-      changes.boost =
-        Math.min(
-          5,
-          Number(player.boost || 0) + 1
-        );
-
-    }
-
-
-    if(game === "run"){
-
-      changes.energy =
-        Math.min(
-          10,
-          Number(player.energy || 0) + 1
-        );
-
-    }
-
-
-    await update(
-      ref(
-        db,
-        "rooms/"+roomId+
-        "/race/players/"+uid
-      ),
-      changes
-    );
-
-
-    if(progress >= 100){
-
-      await claimRaceWinner();
-
-    }
-
-  }
-  catch(error){
-
-    console.error(error);
-
-  }
-
-};
-
-
-
-/* =====================================================
-   CAR BOOST
-===================================================== */
-
-window.useBoost =
-async function(){
-
-  try{
-
-    const snapshot =
-      await get(
-        ref(db,"rooms/"+roomId)
-      );
-
-
-    if(!snapshot.exists()) return;
-
-
-    const data =
-      snapshot.val();
-
-
-    if(
-      data.game !== "car" ||
-      data.race?.winner
-    ){
-
-      return;
-
-    }
-
-
-    const player =
-      data.race?.players?.[uid];
-
-
-    if(!player) return;
-
-
-    const boost =
-      Number(player.boost || 0);
-
-
-    if(boost < 3){
-
-      showToast(
-        "You need 3 boost points!"
-      );
-
-      return;
-
-    }
-
-
-    const progress =
-      Math.min(
-        100,
-        Number(player.progress || 0) + 15
-      );
-
-
-    await update(
-      ref(
-        db,
-        "rooms/"+roomId+
-        "/race/players/"+uid
-      ),
-      {
-
-        progress:progress,
-
-        boost:0,
-
-        score:
-          Number(player.score || 0) + 3
-
-      }
-    );
-
-
-    if(progress >= 100){
-
-      await claimRaceWinner();
-
-    }
-
-  }
-  catch(error){
-
-    console.error(error);
-
-  }
-
-};
-
-
-
-/* =====================================================
-   BIKE DODGE
-===================================================== */
-
-window.dodgeBike =
-async function(){
-
-  try{
-
-    const snapshot =
-      await get(
-        ref(db,"rooms/"+roomId)
-      );
-
-
-    if(!snapshot.exists()) return;
-
-
-    const data =
-      snapshot.val();
-
-
-    if(
-      data.game !== "bike" ||
-      data.race?.winner
-    ){
-
-      return;
-
-    }
-
-
-    const player =
-      data.race?.players?.[uid];
-
-
-    if(!player) return;
-
-
-    const progress =
-      Math.min(
-        100,
-        Number(player.progress || 0) + 8
-      );
-
-
-    await update(
-      ref(
-        db,
-        "rooms/"+roomId+
-        "/race/players/"+uid
-      ),
-      {
-
-        progress:progress,
-
-        dodged:
-          Number(player.dodged || 0) + 1,
-
-        score:
-          Number(player.score || 0) + 2
-
-      }
-    );
-
-
-    if(progress >= 100){
-
-      await claimRaceWinner();
-
-    }
-
-  }
-  catch(error){
-
-    console.error(error);
-
-  }
-
-};
-
-
-
-/* =====================================================
-   CLAIM WINNER
-===================================================== */
-
-async function claimRaceWinner(){
-
-  const winnerRef =
-    ref(
-      db,
-      "rooms/"+roomId+
-      "/race/winner"
-    );
-
-
-  const result =
-    await runTransaction(
-      winnerRef,
-      currentWinner => {
-
-        if(currentWinner){
-
-          return;
-
+    // Listen to Firebase room sync
+    function listenToRoom(code) {
+      const roomRef = ref(db, `race_lobbies/${code}`);
+      const myRef = ref(db, `race_lobbies/${code}/${playerRole}/connected`);
+      onDisconnect(myRef).set(false);
+
+      onValue(roomRef, (snapshot) => {
+        const data = snapshot.val();
+        if (!data) return;
+
+        roomStatus = data.status;
+        winner = data.winner;
+
+        // Populate opponent state
+        const oppKey = playerRole === "p1" ? "p2" : "p1";
+        if (data[oppKey]) {
+          opponentDriver = data[oppKey];
         }
 
-        return uid;
+        // Switch to game screen when ready
+        if (data.status === "racing" && lobbyPanel.style.display !== "none") {
+          lobbyPanel.style.display = "none";
+          gameContainer.style.display = "flex";
+          hudName.textContent = localDriver.name;
+          hudVehicle.textContent = localDriver.type.toUpperCase();
+        }
 
+        if (data.status === "ended") {
+          btnRematch.classList.remove("hidden");
+        }
+      });
+    }
+
+    // Rematch Reset
+    btnRematch.onclick = async () => {
+      const roomRef = ref(db, `race_lobbies/${roomCode}`);
+      localDriver.x = playerRole === "p1" ? 440 : 440;
+      localDriver.y = playerRole === "p1" ? 425 : 455;
+      localDriver.angle = 0;
+      localDriver.speed = 0;
+      localDriver.lap = 1;
+      localDriver.passedHalfway = false;
+
+      await update(roomRef, {
+        status: "racing",
+        winner: null,
+        [`${playerRole}/x`]: localDriver.x,
+        [`${playerRole}/y`]: localDriver.y,
+        [`${playerRole}/angle`]: 0,
+        [`${playerRole}/speed`]: 0,
+        [`${playerRole}/lap`]: 1
+      });
+      btnRematch.classList.add("hidden");
+    };
+
+    // Physics Loop & Network Syncer
+    let lastNetworkSync = 0;
+
+    function updatePhysics() {
+      if (roomStatus !== "racing") return;
+
+      const spec = SPECS[localDriver.type];
+
+      // Acceleration & Braking
+      if (keys.forward) localDriver.speed += spec.accel;
+      if (keys.backward) localDriver.speed -= spec.accel * 0.7;
+
+      // Friction & Clamping
+      localDriver.speed *= spec.friction;
+      if (localDriver.speed > spec.maxSpeed) localDriver.speed = spec.maxSpeed;
+      if (localDriver.speed < -spec.maxSpeed * 0.4) localDriver.speed = -spec.maxSpeed * 0.4;
+
+      // Steering
+      if (Math.abs(localDriver.speed) > 0.1) {
+        const dir = localDriver.speed > 0 ? 1 : -1;
+        if (keys.left) localDriver.angle -= spec.turnSpeed * dir;
+        if (keys.right) localDriver.angle += spec.turnSpeed * dir;
       }
-    );
 
+      // Move Forward
+      localDriver.x += Math.cos(localDriver.angle) * localDriver.speed;
+      localDriver.y += Math.sin(localDriver.angle) * localDriver.speed;
 
-  if(
-    result.committed &&
-    result.snapshot.val() === uid
-  ){
+      // Checkpoint & Lap Detection (Oval circuit midpoint is x < 200)
+      if (localDriver.x < 200) {
+        localDriver.passedHalfway = true;
+      }
 
-    const snapshot =
-      await get(
-        ref(
-          db,
-          "rooms/"+roomId+
-          "/players/"+uid
-        )
+      // Finish line is at x = 440 crossing eastward along the bottom track (y > 380)
+      if (localDriver.passedHalfway && localDriver.x >= 440 && localDriver.y > 380) {
+        localDriver.passedHalfway = false;
+        localDriver.lap += 1;
+        hudLap.textContent = `${Math.min(localDriver.lap, 3)}/3`;
+
+        if (localDriver.lap > 3) {
+          // Finished race
+          update(ref(db, `race_lobbies/${roomCode}`), {
+            status: "ended",
+            winner: localDriver.name
+          });
+        }
+      }
+
+      // Bound to screen
+      localDriver.x = Math.max(30, Math.min(canvas.width - 30, localDriver.x));
+      localDriver.y = Math.max(30, Math.min(canvas.height - 30, localDriver.y));
+
+      // Realtime Firebase throttle: sync every 45ms (~22 updates/sec)
+      const now = performance.now();
+      if (now - lastNetworkSync > 45 && roomCode) {
+        lastNetworkSync = now;
+        update(ref(db, `race_lobbies/${roomCode}/${playerRole}`), {
+          x: localDriver.x,
+          y: localDriver.y,
+          angle: localDriver.angle,
+          speed: localDriver.speed,
+          lap: localDriver.lap
+        });
+      }
+
+      hudSpeed.textContent = Math.round(Math.abs(localDriver.speed) * 28);
+    }
+
+    // Canvas Rendering
+    function draw() {
+      // 1. Infield Grass
+      ctx.fillStyle = "#15803d";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // 2. Asphalt Track (Outer Oval)
+      ctx.fillStyle = "#1e293b";
+      ctx.beginPath();
+      ctx.roundRect(50, 50, canvas.width - 100, canvas.height - 100, 140);
+      ctx.fill();
+
+      // Track Inner Grass Island
+      ctx.fillStyle = "#15803d";
+      ctx.beginPath();
+      ctx.roundRect(190, 160, canvas.width - 380, canvas.height - 320, 80);
+      ctx.fill();
+
+      // Track Center Guide Line
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.25)";
+      ctx.lineWidth = 2;
+      ctx.setLineDash([12, 12]);
+      ctx.beginPath();
+      ctx.roundRect(120, 105, canvas.width - 240, canvas.height - 210, 110);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // 3. Checkered Finish Line (at bottom straightaway: x = 440)
+      for (let r = 0; r < 5; r++) {
+        for (let c = 0; c < 2; c++) {
+          ctx.fillStyle = (r + c) % 2 === 0 ? "#ffffff" : "#000000";
+          ctx.fillRect(440 + c * 10, 360 + r * 16, 10, 16);
+        }
+      }
+
+      // 4. Render Opponent
+      if (opponentDriver) {
+        drawVehicle(
+          opponentDriver.x, 
+          opponentDriver.y, 
+          opponentDriver.angle, 
+          opponentDriver.type, 
+          opponentDriver.name, 
+          playerRole === "p1" ? "#ef4444" : "#38bdf8"
+        );
+      }
+
+      // 5. Render Local Player
+      drawVehicle(
+        localDriver.x, 
+        localDriver.y, 
+        localDriver.angle, 
+        localDriver.type, 
+        `${localDriver.name} (You)`, 
+        playerRole === "p1" ? "#38bdf8" : "#ef4444"
       );
 
+      // 6. Winner Banner Overlay
+      if (roomStatus === "ended") {
+        ctx.fillStyle = "rgba(9, 13, 22, 0.85)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    const player =
-      snapshot.val();
+        ctx.fillStyle = "#facc15";
+        ctx.font = "bold 38px system-ui";
+        ctx.textAlign = "center";
+        ctx.fillText(`🏁 ${winner} WINS!`, canvas.width / 2, canvas.height / 2 - 10);
 
-
-    await update(
-      ref(
-        db,
-        "rooms/"+roomId+
-        "/race"
-      ),
-      {
-
-        winner:uid,
-
-        winnerName:
-          player?.name || "Player"
-
+        ctx.font = "16px system-ui";
+        ctx.fillStyle = "#f8fafc";
+        ctx.fillText("Click 'Race Again' below to reset the match", canvas.width / 2, canvas.height / 2 + 30);
       }
-    );
-
-  }
-
-}
-
-
-
-/* =====================================================
-   BACK TO ROOM
-===================================================== */
-
-async function backToRoom(){
-
-  if(!roomId) return;
-
-
-  if(!isHost){
-
-    showToast(
-      "Only the host can return to the room"
-    );
-
-    return;
-
-  }
-
-
-  await update(
-    ref(db,"rooms/"+roomId),
-    {
-
-      started:false,
-
-      winner:null,
-
-      winnerName:null,
-
-      board:null,
-
-      turn:null,
-
-      race:null
-
     }
-  );
 
-}
+    function drawVehicle(x, y, angle, type, label, color) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(angle);
 
+      if (type === "car") {
+        // Car Body
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.roundRect(-16, -9, 32, 18, 4);
+        ctx.fill();
 
+        // Windshield
+        ctx.fillStyle = "#090d16";
+        ctx.fillRect(-2, -7, 10, 14);
 
-/* =====================================================
-   LEAVE ROOM
-===================================================== */
+        // Headlights
+        ctx.fillStyle = "#fef08a";
+        ctx.fillRect(14, -8, 3, 4);
+        ctx.fillRect(14, 4, 3, 4);
 
-async function leaveRoom(){
+        // Tires
+        ctx.fillStyle = "#000";
+        ctx.fillRect(-12, -12, 8, 3);
+        ctx.fillRect(6, -12, 8, 3);
+        ctx.fillRect(-12, 9, 8, 3);
+        ctx.fillRect(6, 9, 8, 3);
+      } else {
+        // Bike Body
+        ctx.fillStyle = color;
+        ctx.fillRect(-12, -3, 24, 6);
 
-  try{
+        // Wheels
+        ctx.fillStyle = "#000";
+        ctx.fillRect(-14, -2, 6, 4);
+        ctx.fillRect(8, -2, 6, 4);
 
-    if(roomId && uid){
-
-      if(isHost){
-
-        await remove(
-          ref(db,"rooms/"+roomId)
-        );
-
-      }
-      else{
-
-        await remove(
-          ref(
-            db,
-            "rooms/"+roomId+
-            "/players/"+uid
-          )
-        );
-
+        // Driver Helmet
+        ctx.fillStyle = "#ffffff";
+        ctx.beginPath();
+        ctx.arc(0, 0, 5, 0, Math.PI * 2);
+        ctx.fill();
       }
 
+      ctx.restore();
+
+      // Render Driver Label
+      ctx.save();
+      ctx.font = "bold 11px system-ui";
+      ctx.textAlign = "center";
+      ctx.fillStyle = "#ffffff";
+      ctx.shadowColor = "rgba(0,0,0,0.8)";
+      ctx.shadowBlur = 4;
+      ctx.fillText(label, x, y - 20);
+      ctx.restore();
     }
 
-  }
-  catch(error){
-
-    console.error(error);
-
-  }
-
-
-  location.reload();
-
-}
-
-
-
-/* =====================================================
-   COPY ROOM CODE
-===================================================== */
-
-async function copyCode(){
-
-  try{
-
-    await navigator.clipboard
-      .writeText(roomId);
-
-    showToast(
-      "Room code copied!"
-    );
-
-  }
-  catch(error){
-
-    showToast(
-      "Room code: "+roomId
-    );
-
-  }
-
-}
-
-
-
-/* =====================================================
-   READY PLAYER
-===================================================== */
-
-async function readyPlayer(){
-
-  if(!roomId || !uid) return;
-
-
-  await update(
-    ref(
-      db,
-      "rooms/"+roomId+
-      "/players/"+uid
-    ),
-    {
-
-      ready:true
-
+    // Main Game Loop
+    function loop() {
+      updatePhysics();
+      draw();
+      requestAnimationFrame(loop);
     }
-  );
-
-}
-
-
-
-/* =====================================================
-   KEYBOARD CONTROLS
-===================================================== */
-
-document.addEventListener(
-  "keydown",
-  event => {
-
-    if(event.code !== "Space"){
-      return;
-    }
-
-
-    if(
-      $("game")
-      .classList
-      .contains("hidden")
-    ){
-
-      return;
-
-    }
-
-
-    if(
-      $("gameTitle")
-      .textContent
-      .includes("Run Rush")
-    ){
-
-      event.preventDefault();
-
-      window.raceAction("run");
-
-    }
-
-  }
-);
-
-
-
-/* =====================================================
-   EXPOSE FUNCTIONS
-===================================================== */
-
-window.createRoom =
-  createRoom;
-
-window.showJoin =
-  showJoin;
-
-window.joinRoom =
-  joinRoom;
-
-window.selectGame =
-  selectGame;
-
-window.startGame =
-  startGame;
-
-window.backToRoom =
-  backToRoom;
-
-window.leaveRoom =
-  leaveRoom;
-
-window.copyCode =
-  copyCode;
-
-window.readyPlayer =
-  readyPlayer;
-
-
-</script>
-
+    loop();
+  </script>
 </body>
-
 </html>
+
